@@ -1,0 +1,2304 @@
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  :root {
+    --green-dark: #173404;
+    --green-mid: #3B6D11;
+    --green-light: #C0DD97;
+    --amber: #BA7517;
+    --amber-light: #FAC775;
+    --red: #D85A30;
+    --blue: #185FA5;
+    --wa: #25D366;
+    --wa-dark: #128C7E;
+    --WA_CHANNEL: "https://whatsapp.com/channel/0029Vb7C3iR6LwHehS9hhY3g";
+    --color-background-primary: #0f1419;
+    --color-background-secondary: #171d24;
+    --color-text-primary: #e6edf3;
+    --color-text-secondary: #9ba7b4;
+    --color-border-secondary: #33404d;
+    --color-border-tertiary: #27313c;
+    --border-radius-lg: 14px;
+    --border-radius-md: 10px;
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0b1015;
+    color: var(--color-text-primary);
+  }
+
+  .app {
+    background: var(--color-background-primary);
+    color: var(--color-text-primary);
+    min-height: 100vh;
+  }
+
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--color-background-primary);
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--green-mid);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-text {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .logo-sub {
+    font-size: 9px;
+    color: var(--color-text-secondary);
+    letter-spacing: 1px;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--color-background-secondary);
+    padding: 4px;
+    border-radius: 10px;
+    margin: 12px 14px;
+  }
+
+  .tab {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 8px 4px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 7px;
+    font-family: inherit;
+    color: var(--color-text-secondary);
+    transition: all 0.18s;
+  }
+
+  .tab.active {
+    background: var(--color-background-primary);
+    color: var(--color-text-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+  }
+
+  .screen {
+    display: none;
+    padding: 0 14px 80px;
+    animation: fadeUp 0.3s ease;
+  }
+
+  .screen.active {
+    display: block;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(8px)
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0)
+    }
+  }
+
+  /* WA CHANNEL BANNER */
+  .wa-banner {
+    background: linear-gradient(135deg, #075E54, #128C7E);
+    border-radius: var(--border-radius-lg);
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.18s;
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .wa-banner::after {
+    content: '';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .wa-banner:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(7, 94, 84, 0.3);
+  }
+
+  .wa-banner-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--wa);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .wa-banner-text {
+    flex: 1;
+  }
+
+  .wa-banner-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+
+  .wa-banner-sub {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .wa-banner-btn {
+    background: var(--wa);
+    color: #04342C;
+    border: none;
+    border-radius: 20px;
+    padding: 7px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* WA MINI CHIP on job cards */
+  .wa-channel-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #11382b;
+    color: #8ef2bf;
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 0.5px solid #1f7051;
+    transition: all 0.15s;
+  }
+
+  .wa-channel-chip:hover {
+    background: #25D366;
+    color: #04342C;
+  }
+
+  .hero {
+    background: linear-gradient(150deg, var(--green-dark), #2E6B00, #4A8C00);
+    border-radius: var(--border-radius-lg);
+    padding: 24px 18px;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(186, 117, 23, 0.25);
+    border: 0.5px solid rgba(186, 117, 23, 0.5);
+    border-radius: 20px;
+    padding: 3px 10px;
+    margin-bottom: 12px;
+  }
+
+  .hero-tag span {
+    font-size: 10px;
+    color: var(--amber-light);
+    font-weight: 500;
+  }
+
+  .hero h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #EAF3DE;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+
+  .hero p {
+    font-size: 12px;
+    color: rgba(192, 221, 151, 0.8);
+    margin-bottom: 18px;
+  }
+
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #1e2630;
+    border-radius: 10px;
+    padding: 8px 8px 8px 12px;
+    border: 0.5px solid var(--color-border-secondary);
+  }
+
+  .search-bar input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 13px;
+    background: transparent;
+    font-family: inherit;
+    color: var(--color-text-primary);
+  }
+
+  .voice-btn-sm {
+    border: none;
+    background: var(--green-mid);
+    color: #EAF3DE;
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .search-go {
+    border: none;
+    background: var(--amber);
+    color: #fff;
+    border-radius: 8px;
+    padding: 0 12px;
+    height: 36px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+
+  .card {
+    background: var(--color-background-primary);
+    border-radius: var(--border-radius-lg);
+    border: 0.5px solid var(--color-border-tertiary);
+    padding: 14px;
+    margin-bottom: 10px;
+    transition: all 0.18s;
+  }
+
+  .card:hover {
+    border-color: var(--color-border-secondary);
+  }
+
+  .job-card {
+    border-left: 3px solid var(--green-mid);
+  }
+
+  .job-card.urgent {
+    border-left-color: var(--red);
+  }
+
+  .cat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .cat-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 12px;
+    cursor: pointer;
+    border: 0.5px solid var(--color-border-tertiary);
+    transition: all 0.18s;
+  }
+
+  .cat-item:hover {
+    border-color: var(--green-mid);
+    background: var(--color-background-primary);
+  }
+
+  .cat-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .btn-green {
+    background: var(--green-mid);
+    color: #EAF3DE;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.18s;
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--color-text-primary);
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.18s;
+  }
+
+  .btn-wa {
+    background: var(--wa);
+    color: #04342C;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .btn-apply {
+    background: var(--green-mid);
+    color: #EAF3DE;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    flex: 1;
+  }
+
+  .btn-full {
+    width: 100%;
+    margin-top: 8px;
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .small-note {
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .form-label {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  .form-input {
+    width: 100%;
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 10px 12px;
+    font-size: 13px;
+    font-family: inherit;
+    background: var(--color-background-primary);
+    color: var(--color-text-primary);
+    outline: none;
+    transition: border-color 0.18s;
+  }
+
+  .form-input:focus {
+    border-color: var(--green-mid);
+  }
+
+  select.form-input {
+    cursor: pointer;
+  }
+
+  .ai-box {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-lg);
+    border: 0.5px solid var(--color-border-tertiary);
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+
+  .ai-header {
+    padding: 10px 14px;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ai-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #25D366;
+    animation: blink 1.5s infinite;
+  }
+
+  @keyframes blink {
+
+    0%,
+    100% {
+      opacity: 1
+    }
+
+    50% {
+      opacity: 0.3
+    }
+  }
+
+  .ai-messages {
+    padding: 12px;
+    max-height: 220px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ai-messages::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .ai-messages::-webkit-scrollbar-thumb {
+    background: var(--color-border-secondary);
+    border-radius: 4px;
+  }
+
+  .msg {
+    padding: 9px 12px;
+    border-radius: 10px;
+    font-size: 12px;
+    line-height: 1.6;
+    max-width: 88%;
+  }
+
+  .msg.ai {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    align-self: flex-start;
+    color: var(--color-text-primary);
+  }
+
+  .msg.user {
+    background: var(--green-mid);
+    color: #EAF3DE;
+    align-self: flex-end;
+  }
+
+  .ai-input-row {
+    display: flex;
+    gap: 6px;
+    padding: 10px;
+    border-top: 0.5px solid var(--color-border-tertiary);
+  }
+
+  .ai-input-row input {
+    flex: 1;
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    font-family: inherit;
+    background: var(--color-background-primary);
+    color: var(--color-text-primary);
+    outline: none;
+  }
+
+  .ai-send {
+    border: none;
+    background: var(--green-mid);
+    color: #EAF3DE;
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .badge {
+    font-size: 10px;
+    font-weight: 500;
+    border-radius: 20px;
+    padding: 2px 8px;
+    display: inline-block;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .stat-card {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 12px 8px;
+    text-align: center;
+    border: 0.5px solid var(--color-border-tertiary);
+  }
+
+  .avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--green-mid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    background: var(--color-background-primary);
+    border-top: 0.5px solid var(--color-border-tertiary);
+    padding: 8px 0 4px;
+    display: flex;
+    justify-content: space-around;
+    z-index: 50;
+  }
+
+  .bnav {
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-family: inherit;
+    transition: background 0.15s;
+  }
+
+  .bnav:hover {
+    background: var(--color-background-secondary);
+  }
+
+  .bnav-label {
+    font-size: 9px;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+  }
+
+  .toast {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #075E54;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    z-index: 100;
+    transition: all 0.3s;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .map-box {
+    background: linear-gradient(135deg, #15241a, #1b3123);
+    border-radius: var(--border-radius-lg);
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 6px;
+    border: 0.5px dashed #2f6d49;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+
+  .map-box span {
+    color: #c7ead4;
+  }
+
+  .wave-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 30px;
+    justify-content: center;
+  }
+
+  .wave-bar {
+    width: 3px;
+    border-radius: 2px;
+    background: var(--green-mid);
+    transition: height 0.1s;
+  }
+
+  .sec-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .divider {
+    height: 0.5px;
+    background: var(--color-border-tertiary);
+    margin: 14px 0;
+  }
+
+  .chip-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .chip {
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 11px;
+    cursor: pointer;
+    background: transparent;
+    font-family: inherit;
+    color: var(--color-text-secondary);
+    transition: all 0.15s;
+  }
+
+  .chip.active {
+    background: var(--green-mid);
+    color: #EAF3DE;
+    border-color: var(--green-mid);
+  }
+
+  .posted-tag {
+    background: #EAF3DE;
+    color: #27500A;
+    font-size: 10px;
+    font-weight: 500;
+    border-radius: 20px;
+    padding: 2px 8px;
+  }
+
+  .urgent-tag {
+    background: #FAECE7;
+    color: #993C1D;
+    font-size: 10px;
+    font-weight: 500;
+    border-radius: 20px;
+    padding: 2px 8px;
+  }
+
+  /* PULSE ANIMATION FOR BANNER */
+  @keyframes pulse-wa {
+
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4)
+    }
+
+    50% {
+      box-shadow: 0 0 0 8px rgba(37, 211, 102, 0)
+    }
+  }
+
+  .wa-banner-icon {
+    animation: pulse-wa 2s infinite;
+  }
+</style>
+
+<div class="app" id="app">
+  <div class="toast" id="toast" style="opacity:0;top:50px;"></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path
+            d="M8 1 Q9.5 3.5 12 4.5 Q10 5.5 9 7.5 Q10 9.5 12 10.5 Q9 10.5 8 14 Q7 10.5 4 10.5 Q6 9.5 7 7.5 Q6 5.5 4 4.5 Q6.5 3.5 8 1Z"
+            fill="#C0DD97" />
+        </svg>
+      </div>
+      <div>
+        <div class="logo-text">KaamSetu</div>
+        <div class="logo-sub">AI-POWERED RURAL JOBS</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;">
+      <span class="badge" style="background:#EAF3DE;color:#27500A;">🟢 Live</span>
+      <div
+        style="width:28px;height:28px;background:var(--color-background-secondary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;"
+        onclick="switchTab('profile')">👤</div>
+    </div>
+  </nav>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" id="tab-home" onclick="switchTab('home')">🏠 Home</button>
+    <button class="tab" id="tab-jobs" onclick="switchTab('jobs')">💼 Jobs</button>
+    <button class="tab" id="tab-post" onclick="switchTab('post')">➕ Post</button>
+    <button class="tab" id="tab-ai" onclick="switchTab('ai')">🤖 AI</button>
+    <button class="tab" id="tab-profile" onclick="switchTab('profile')">👤 Me</button>
+  </div>
+
+  <!-- ===== HOME ===== -->
+  <div class="screen active" id="screen-home">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-tag"><span>📡 2G Ready • PWA • AI Powered</span></div>
+      <h1 id="heroTitle">अपना काम, अपने गाँव के पास</h1>
+      <p id="heroSub">आवाज़ से खोजें • WhatsApp पर पाएं • AI से मदद लें</p>
+      <div class="search-bar">
+        <input id="searchInput" placeholder="काम खोजें... (e.g. खेती, मज़दूर)"
+          onkeydown="if(event.key==='Enter')doSearch()" />
+        <button class="voice-btn-sm" onclick="toggleVoice()" id="voiceBtn">🎙</button>
+        <button class="search-go" onclick="doSearch()">खोजें ↗</button>
+      </div>
+    </div>
+
+    <!-- ✅ WA BROADCAST BANNER - HOME -->
+    <div class="wa-banner" onclick="openChannel()">
+      <div class="wa-banner-icon">📢</div>
+      <div class="wa-banner-text">
+        <div class="wa-banner-title">KaamSetu WhatsApp Channel</div>
+        <div class="wa-banner-sub">Naye kaam ki alert seedha WhatsApp pe • Free • 1 click</div>
+      </div>
+      <button class="wa-banner-btn" onclick="openChannel()">Join ↗</button>
+    </div>
+
+    <!-- Lang Chips -->
+    <div class="chip-row">
+      <button class="chip active" onclick="setLang('hi',this)">हिंदी</button>
+      <button class="chip" onclick="setLang('en',this)">English</button>
+      <button class="chip" onclick="setLang('mr',this)">मराठी</button>
+      <button class="chip" onclick="setLang('ta',this)">தமிழ்</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div style="font-size:18px;">👷</div>
+        <div style="font-size:16px;font-weight:600;color:var(--green-mid);">48,200</div>
+        <div style="font-size:9px;color:var(--color-text-secondary);" id="statWL">Workers</div>
+      </div>
+      <div class="stat-card">
+        <div style="font-size:18px;">💼</div>
+        <div style="font-size:16px;font-weight:600;color:var(--amber);">3,760</div>
+        <div style="font-size:9px;color:var(--color-text-secondary);" id="statJL">Active Jobs</div>
+      </div>
+      <div class="stat-card">
+        <div style="font-size:18px;">🏘</div>
+        <div style="font-size:16px;font-weight:600;color:var(--blue);">890</div>
+        <div style="font-size:9px;color:var(--color-text-secondary);" id="statVL">Villages</div>
+      </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="sec-title">🗂 <span id="catLabel">Job Categories</span></div>
+    <div class="cat-grid">
+      <div class="cat-item" onclick="filterCat('Agriculture')">
+        <div class="cat-dot" style="background:#3B6D11;"></div><span style="font-size:16px;">🌾</span>
+        <div>
+          <div style="font-size:12px;font-weight:500;" id="c1">Agriculture</div>
+          <div style="font-size:10px;color:var(--color-text-secondary);">142 jobs</div>
+        </div>
+      </div>
+      <div class="cat-item" onclick="filterCat('Construction')">
+        <div class="cat-dot" style="background:#D85A30;"></div><span style="font-size:16px;">🏗</span>
+        <div>
+          <div style="font-size:12px;font-weight:500;" id="c2">Construction</div>
+          <div style="font-size:10px;color:var(--color-text-secondary);">89 jobs</div>
+        </div>
+      </div>
+      <div class="cat-item" onclick="filterCat('Handloom')">
+        <div class="cat-dot" style="background:#7F77DD;"></div><span style="font-size:16px;">🧵</span>
+        <div>
+          <div style="font-size:12px;font-weight:500;" id="c3">Handloom</div>
+          <div style="font-size:10px;color:var(--color-text-secondary);">56 jobs</div>
+        </div>
+      </div>
+      <div class="cat-item" onclick="filterCat('Driving')">
+        <div class="cat-dot" style="background:#185FA5;"></div><span style="font-size:16px;">🚛</span>
+        <div>
+          <div style="font-size:12px;font-weight:500;" id="c4">Driving</div>
+          <div style="font-size:10px;color:var(--color-text-secondary);">73 jobs</div>
+        </div>
+      </div>
+      <div class="cat-item" onclick="filterCat('Retail')">
+        <div class="cat-dot" style="background:#BA7517;"></div><span style="font-size:16px;">🛒</span>
+        <div>
+          <div style="font-size:12px;font-weight:500;" id="c5">Retail</div>
+          <div style="font-size:10px;color:var(--color-text-secondary);">38 jobs</div>
+        </div>
+      </div>
+      <div class="cat-item" onclick="filterCat('Electrical')">
+        <div class="cat-dot" style="background:#EF9F27;"></div><span style="font-size:16px;">⚡</span>
+        <div>
+          <div style="font-size:12px;font-weight:500;" id="c6">Electrical</div>
+          <div style="font-size:10px;color:var(--color-text-secondary);">41 jobs</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Map -->
+    <div class="sec-title">📍 <span id="nearLabel">Nearby Jobs (5km)</span></div>
+    <div class="map-box">
+      <div
+        style="position:absolute;top:14px;left:18px;width:8px;height:8px;border-radius:50%;background:#3B6D11;box-shadow:0 0 0 4px rgba(59,109,17,0.25);">
+      </div>
+      <div
+        style="position:absolute;top:50px;right:44px;width:6px;height:6px;border-radius:50%;background:#D85A30;box-shadow:0 0 0 3px rgba(216,90,48,0.2);">
+      </div>
+      <div
+        style="position:absolute;bottom:28px;left:70px;width:6px;height:6px;border-radius:50%;background:#185FA5;box-shadow:0 0 0 3px rgba(24,95,165,0.2);">
+      </div>
+      <span style="font-size:28px;">🗺</span>
+      <span style="font-size:11px;color:#3B6D11;font-weight:500;">5km radius • 12 jobs found</span>
+      <button class="btn-green" style="font-size:11px;padding:6px 14px;" onclick="switchTab('jobs')">View All →</button>
+    </div>
+  </div>
+
+  <!-- ===== JOBS ===== -->
+  <div class="screen" id="screen-jobs">
+
+    <!-- ✅ WA BROADCAST BANNER - JOBS PAGE -->
+    <div class="wa-banner" style="margin-top:4px;" onclick="openChannel()">
+      <div class="wa-banner-icon">📢</div>
+      <div class="wa-banner-text">
+        <div class="wa-banner-title">Naye jobs ki alert chahiye?</div>
+        <div class="wa-banner-sub">KaamSetu WhatsApp Channel join karo — Free!</div>
+      </div>
+      <button class="wa-banner-btn">Join ↗</button>
+    </div>
+
+    <div style="display:flex;gap:6px;margin-bottom:12px;">
+      <input id="jobSearch" class="form-input" placeholder="Search jobs..." style="flex:1;" onkeyup="renderJobs()" />
+      <select id="jobFilter" class="form-input" style="width:110px;" onchange="renderJobs()">
+        <option value="">All</option>
+        <option>Agriculture</option>
+        <option>Construction</option>
+        <option>Driving</option>
+        <option>Handloom</option>
+        <option>Retail</option>
+        <option>Electrical</option>
+      </select>
+    </div>
+    <div id="jobsContainer"></div>
+  </div>
+
+  <!-- ===== POST JOB ===== -->
+  <div class="screen" id="screen-post">
+    <div class="sec-title" style="margin-top:4px;">📋 Post a New Job</div>
+    <div class="card">
+      <div class="form-group">
+        <label class="form-label">Job Title *</label>
+        <input class="form-input" id="pTitle" placeholder="e.g. Paddy Harvesting Workers" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Category *</label>
+        <select class="form-input" id="pCat">
+          <option value="">Select category</option>
+          <option>Agriculture</option>
+          <option>Construction</option>
+          <option>Driving</option>
+          <option>Handloom</option>
+          <option>Retail</option>
+          <option>Electrical</option>
+          <option>Plumbing</option>
+          <option>Cooking</option>
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="form-group">
+          <label class="form-label">Daily Wage (₹) *</label>
+          <input class="form-input" id="pWage" type="number" placeholder="500" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Workers Needed</label>
+          <input class="form-input" id="pCount" type="number" placeholder="5" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Location / Village *</label>
+        <input class="form-input" id="pLoc" placeholder="e.g. Raebareli, UP" />
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="form-group">
+          <label class="form-label">Latitude (optional)</label>
+          <input class="form-input" id="pLat" type="number" step="any" placeholder="26.2333" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Longitude (optional)</label>
+          <input class="form-input" id="pLng" type="number" step="any" placeholder="81.2333" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea class="form-input" id="pDesc" rows="3"
+          placeholder="Describe the work, duration, requirements..."></textarea>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+        <input type="checkbox" id="pUrgent" style="width:16px;height:16px;accent-color:var(--red);" />
+        <label for="pUrgent" style="font-size:13px;cursor:pointer;">⚡ Mark as Urgent</label>
+      </div>
+      <button class="btn-green btn-full" onclick="postJob()">📤 Post Job</button>
+      <button class="btn-outline btn-full" style="margin-top:6px;" onclick="aiWriteJob()">🤖 AI se likwao ↗</button>
+      <button class="btn-outline btn-full" style="margin-top:6px;" onclick="enableLocationAlerts()">📍 Enable Location
+        Alerts</button>
+      <p class="small-note" id="locState">Location alerts disabled</p>
+    </div>
+    <div class="sec-title">📌 Your Posted Jobs</div>
+    <div id="myJobs"></div>
+  </div>
+
+  <!-- ===== AI HELP ===== -->
+  <div class="screen" id="screen-ai">
+    <div class="sec-title" style="margin-top:4px;">🤖 KaamSetu AI Assistant</div>
+
+    <!-- Gemini API Key Input -->
+    <div class="card" style="margin-bottom:10px;padding:10px 14px;">
+      <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:6px;">🔑 Google Gemini API Key (free:
+        aistudio.google.com)</div>
+      <div style="display:flex;gap:6px;">
+        <input class="form-input" id="geminiApiKey" type="password" placeholder="AIzaSy... paste karo"
+          style="flex:1;font-size:12px;" oninput="saveGeminiKey(this.value)" />
+        <button class="btn-green" style="font-size:11px;padding:0 12px;white-space:nowrap;"
+          onclick="testGeminiKey()">Test ✓</button>
+      </div>
+      <div id="geminiStatus" style="font-size:10px;color:var(--color-text-secondary);margin-top:4px;">Key nahi hai —
+        smart local answers chal rahe hain</div>
+    </div>
+
+    <div class="ai-box">
+      <div class="ai-header">
+        <div class="ai-dot"></div>
+        <span style="font-size:12px;font-weight:500;">Claude AI — Powered by Anthropic</span>
+        <span style="margin-left:auto;font-size:10px;color:var(--color-text-secondary);">Live</span>
+      </div>
+      <div class="ai-messages" id="aiMessages">
+        <div class="msg ai">Namaste! 🙏 Main KaamSetu ka AI assistant hoon. Poochh sakte hain:<br><br>• Kaam kaise
+          dhundhein<br>• Wage guidance<br>• Govt schemes (MGNREGA)<br>• Resume/profile banana<br>• Contractor fraud se
+          bachna</div>
+      </div>
+      <div class="ai-input-row">
+        <input id="aiInput" placeholder="Koi bhi sawaal poochhen..." onkeydown="if(event.key==='Enter')sendAI()" />
+        <button class="ai-send" onclick="sendAI()">↑</button>
+      </div>
+    </div>
+    <div class="sec-title">⚡ Quick Questions</div>
+    <div class="chip-row">
+      <button class="chip" onclick="quickQ('MGNREGA scheme kya hai aur kaise apply karein?')">MGNREGA?</button>
+      <button class="chip" onclick="quickQ('Meri daily wage kitni honi chahiye construction mein?')">Wage Guide</button>
+      <button class="chip" onclick="quickQ('Resume banana sikhao — main padha likha nahi hoon')">Resume Help</button>
+      <button class="chip" onclick="quickQ('Contractor fraud se bachne ke tips dijiye')">Safety Tips</button>
+    </div>
+    <div class="sec-title">🎯 AI Job Match</div>
+    <div class="card">
+      <p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:10px;">Apni skills batao — AI best jobs
+        suggest karega</p>
+      <input class="form-input" id="skillInput" placeholder="e.g. kheti, tractor chalana, painting..."
+        style="margin-bottom:8px;" />
+      <button class="btn-green btn-full" onclick="aiJobMatch()">🎯 Best Jobs Dhundho ↗</button>
+    </div>
+  </div>
+
+  <!-- ===== PROFILE ===== -->
+  <div class="screen" id="screen-profile">
+    <div class="card" style="margin-top:4px;">
+      <div class="sec-title" style="margin:0 0 10px 0;">🔐 Login (Mobile OTP)</div>
+      <div id="loginBox">
+        <div class="form-group">
+          <label class="form-label">Mobile Number</label>
+          <input class="form-input" id="loginPhone" placeholder="10 digit number" maxlength="10" />
+        </div>
+        <button class="btn-green btn-full" onclick="sendOtp()">Send OTP</button>
+        <div id="recaptcha-container" style="margin-top:8px;"></div>
+        <div id="otpWrap" style="display:none;margin-top:8px;">
+          <input class="form-input" id="loginOtp" placeholder="Enter OTP" maxlength="6" />
+          <button class="btn-outline btn-full" onclick="verifyOtp()">Verify OTP</button>
+        </div>
+      </div>
+      <p id="loginStatus" class="small-note" style="margin-top:8px;">Not logged in</p>
+      <p class="small-note">Login ke baad email draft open hoga: gauravvishwakarma8840@gmail.com</p>
+    </div>
+
+    <div class="card" style="margin-top:4px;">
+      <div style="display:flex;gap:12px;align-items:center;margin-bottom:14px;">
+        <div class="avatar">👷</div>
+        <div style="flex:1;">
+          <div style="font-size:15px;font-weight:600;">Ramlal Yadav</div>
+          <div style="font-size:12px;color:var(--color-text-secondary);">Mazdoor • Uttar Pradesh</div>
+          <div style="display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;">
+            <span class="badge" style="background:#EAF3DE;color:#27500A;">✓ Aadhaar Verified</span>
+            <span class="badge" style="background:#FAEEDA;color:#633806;">🏛 Panchayat</span>
+          </div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:12px;">
+        <div><span style="color:var(--color-text-secondary);">Phone</span>
+          <div style="font-weight:500;">+91 98765 43210</div>
+        </div>
+        <div><span style="color:var(--color-text-secondary);">Village</span>
+          <div style="font-weight:500;">Raebareli, UP</div>
+        </div>
+        <div><span style="color:var(--color-text-secondary);">Daily Wage</span>
+          <div style="font-weight:500;color:var(--green-mid);">₹450/day</div>
+        </div>
+        <div><span style="color:var(--color-text-secondary);">Jobs Done</span>
+          <div style="font-weight:500;">12 ✓</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Voice Bio -->
+    <div class="sec-title">🎙 Voice Bio</div>
+    <div class="card" id="voiceBioCard">
+      <p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px;">30 second mein apna bio record
+        karein — employers sunenge!</p>
+      <div class="wave-bars" id="waveBars" style="margin-bottom:10px;"></div>
+      <div id="recStatus" style="text-align:center;font-size:11px;color:var(--color-text-secondary);margin-bottom:8px;">
+        Ready to record</div>
+
+      <!-- Playback player (hidden until recording exists) -->
+      <div id="audioPlayerWrap"
+        style="display:none;margin-bottom:10px;background:var(--color-background-secondary);border-radius:10px;padding:10px;border:0.5px solid var(--color-border-secondary);">
+        <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:6px;">🎧 Aapka saved bio:</div>
+        <audio id="bioPlayer" controls style="width:100%;height:36px;border-radius:8px;"></audio>
+      </div>
+
+      <div style="display:flex;gap:8px;">
+        <button class="btn-green" style="flex:1;" id="recBtn" onclick="toggleRecord()">🎙 Record Bio</button>
+        <button class="btn-outline" style="flex:1;" id="playBioBtn" onclick="playBio()" style="display:none;">▶
+          Play</button>
+      </div>
+      <div id="recSaveStatus"
+        style="font-size:11px;color:var(--color-text-secondary);margin-top:6px;text-align:center;"></div>
+    </div>
+
+    <!-- Skills -->
+    <div class="sec-title">🛠 My Skills</div>
+    <div class="card">
+      <div id="skillTags" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
+        <span class="badge" style="background:#EAF3DE;color:#27500A;">🌾 Agriculture</span>
+        <span class="badge" style="background:#FAECE7;color:#993C1D;">🏗 Construction</span>
+      </div>
+      <input class="form-input" id="newSkill" placeholder="Add skill..." style="margin-bottom:6px;" />
+      <button class="btn-outline btn-full" onclick="addSkill()">+ Add Skill</button>
+    </div>
+
+    <!-- Verification + WA Channel -->
+    <div class="sec-title">🛡 Verification & Alerts</div>
+    <div class="card">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px;"><span>🪪</span><span>Aadhaar
+              Verification</span></div>
+          <span class="badge" style="background:#EAF3DE;color:#27500A;">✓ Done</span>
+        </div>
+        <div class="divider" style="margin:2px 0;"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px;"><span>🏛</span><span>Panchayat
+              Verification</span></div>
+          <button class="btn-green" style="font-size:11px;padding:5px 10px;"
+            onclick="showToast('Panchayat admin se milein')">Verify →</button>
+        </div>
+        <div class="divider" style="margin:2px 0;"></div>
+        <!-- ✅ WA CHANNEL IN PROFILE -->
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px;"><span>📢</span>
+            <div>
+              <div>WhatsApp Job Alerts</div>
+              <div style="font-size:10px;color:var(--color-text-secondary);">KaamSetu Broadcast Channel</div>
+            </div>
+          </div>
+          <button class="btn-wa" style="font-size:11px;padding:7px 12px;border-radius:20px;"
+            onclick="openChannel()">Join ↗</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <button class="bnav active" id="bnav-home" onclick="switchTab('home')"><span style="font-size:18px;">🏠</span><span
+        class="bnav-label">Home</span></button>
+    <button class="bnav" id="bnav-jobs" onclick="switchTab('jobs')"><span style="font-size:18px;">💼</span><span
+        class="bnav-label">Jobs</span></button>
+    <button class="bnav" id="bnav-post" onclick="switchTab('post')"><span style="font-size:18px;">➕</span><span
+        class="bnav-label">Post</span></button>
+    <button class="bnav" id="bnav-ai" onclick="switchTab('ai')"><span style="font-size:18px;">🤖</span><span
+        class="bnav-label">AI</span></button>
+    <button class="bnav" id="bnav-profile" onclick="switchTab('profile')"><span style="font-size:18px;">👤</span><span
+        class="bnav-label">Me</span></button>
+  </nav>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+<script>
+  const WA_CHANNEL = "https://whatsapp.com/channel/0029Vb7C3iR6LwHehS9hhY3g";
+  const APPLY_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc2cQRLFijJOV1qsO95LXgeS4tBb2cmwncXNKsXHm6G-zOGjg/viewform?usp=header";
+  const AI_CHATBOT_URL = "/api/chat";
+  const ADMIN_EMAIL = "gauravvishwakarma8840@gmail.com";
+  const DEFAULT_COUNTRY_CODE = "+91";
+
+  // ================================================================
+  //  ⚙️  CONFIG — YAHAN APNI KEYS DAALO (ek baar, phir sab kaam karega)
+  //
+  //  GEMINI KEY (free): https://aistudio.google.com/app/apikey
+  //  FAST2SMS KEY (free India SMS): https://www.fast2sms.com → Dashboard → Dev API
+  // ================================================================
+  const GEMINI_API_KEY = "AIzaSyCFo6SRoLsyC5b49F5xEG6QDL5WChN3_7";   // ← replace karo
+  const FAST2SMS_API_KEY = "iXIpqYPFa5werXfgwTzR6svMHy83kH3YJ5fW8bZdWFVnh6Rjhtl3geFKC7FP";     // ← replace karo
+  // ================================================================
+
+  // Auto-load from localStorage if user pasted via UI
+  window._GEMINI_KEY = GEMINI_API_KEY.startsWith("YOUR_") ? (localStorage.getItem("ks_gemini_key") || "") : GEMINI_API_KEY;
+  window._FAST2SMS_KEY = FAST2SMS_API_KEY.startsWith("YOUR_") ? (localStorage.getItem("ks_fast2sms_key") || "") : FAST2SMS_API_KEY;
+
+  const APP_CONFIG = window.KAAMSETU_CONFIG || {
+    firebaseApiKey: "REPLACE_FIREBASE_API_KEY",
+    firebaseAuthDomain: "REPLACE_FIREBASE_AUTH_DOMAIN",
+    firebaseProjectId: "REPLACE_FIREBASE_PROJECT_ID",
+    firebaseStorageBucket: "REPLACE_FIREBASE_STORAGE_BUCKET",
+    firebaseMessagingSenderId: "REPLACE_FIREBASE_MESSAGING_SENDER_ID",
+    firebaseAppId: "REPLACE_FIREBASE_APP_ID"
+  };
+
+  const firebaseConfig = {
+    apiKey: APP_CONFIG.firebaseApiKey,
+    authDomain: APP_CONFIG.firebaseAuthDomain,
+    projectId: APP_CONFIG.firebaseProjectId,
+    storageBucket: APP_CONFIG.firebaseStorageBucket,
+    messagingSenderId: APP_CONFIG.firebaseMessagingSenderId,
+    appId: APP_CONFIG.firebaseAppId
+  };
+
+  const HAS_REAL_BACKEND = !Object.values(APP_CONFIG).some((v) => String(v).startsWith("REPLACE_"));
+  let auth = null;
+  let db = null;
+  let serverTimestamp = () => new Date();
+  if (HAS_REAL_BACKEND) {
+    try {
+      firebase.initializeApp(firebaseConfig);
+      auth = firebase.auth();
+      db = firebase.firestore();
+      serverTimestamp = firebase.firestore.FieldValue.serverTimestamp;
+    } catch (e) {
+      console.error("Firebase init failed:", e);
+    }
+  }
+
+  const DEMO_JOBS = [
+    { id: "d1", title: "Paddy Harvesting Workers", titleHi: "धान की कटाई मज़दूर", cat: "Agriculture", wage: 500, loc: "Raebareli, UP", dist: 2.3, verified: true, urgent: true, desc: "5 workers needed for 7 days paddy harvesting.", posted: "Ramesh Kumar", workers: 5 },
+    { id: "d2", title: "House Construction Labour", titleHi: "मकान निर्माण मज़दूर", cat: "Construction", wage: 450, loc: "Salon, UP", dist: 4.1, verified: true, urgent: false, desc: "Need 3 skilled masons for 2-floor house construction.", posted: "Ramesh Contractor", workers: 3 },
+    { id: "d3", title: "Tractor Driver", titleHi: "ट्रैक्टर चालक", cat: "Driving", wage: 600, loc: "Amethi, UP", dist: 6.8, verified: false, urgent: true, desc: "Experienced tractor driver for field plowing.", posted: "Kisaan Cooperative", workers: 1 }
+  ];
+
+  let jobs = [];
+  let myPostedJobs = [];
+  let allJobsCache = [];
+  let isRecording = false, recTimer, waveTimer;
+  let conversationHistory = [];
+  let loginSession = { isLoggedIn: false, phone: "", uid: "" };
+  let userLocation = null;
+  let nearbyAlertsEnabled = false;
+  let confirmationResult = null;
+  let recaptchaVerifier = null;
+  let seenNearbyJobs = new Set();
+  let unsubscribeJobs = null;
+  let voiceActive = false;
+
+  const catIcons = { Agriculture: "🌾", Construction: "🏗", Driving: "🚛", Handloom: "🧵", Retail: "🛒", Electrical: "⚡", Plumbing: "🪣", Cooking: "🍳" };
+  const LANGS = {
+    hi: { heroTitle: "अपना काम, अपने गाँव के पास", heroSub: "आवाज़ से खोजें • WhatsApp पर पाएं • AI से मदद लें", catLabel: "काम की श्रेणियाँ", nearLabel: "पास के काम (5km)", statWL: "पंजीकृत मज़दूर", statJL: "उपलब्ध काम", statVL: "गाँव जुड़े", c1: "खेती", c2: "निर्माण", c3: "हथकरघा", c4: "ड्राइविंग", c5: "दुकान", c6: "बिजली" },
+    en: { heroTitle: "Your Work, Near Your Village", heroSub: "Search by Voice • WhatsApp Alerts • AI Powered", catLabel: "Job Categories", nearLabel: "Nearby Jobs (5km)", statWL: "Registered Workers", statJL: "Active Jobs", statVL: "Villages", c1: "Agriculture", c2: "Construction", c3: "Handloom", c4: "Driving", c5: "Retail", c6: "Electrical" },
+    mr: { heroTitle: "तुमचे काम, तुमच्या गावाजवळ", heroSub: "आवाजाने शोधा • WhatsApp Alert मिळवा", catLabel: "कामाचे प्रकार", nearLabel: "जवळचे काम", statWL: "नोंदणीकृत कामगार", statJL: "उपलब्ध काम", statVL: "जोडलेली गावे", c1: "शेती", c2: "बांधकाम", c3: "हातमाग", c4: "वाहन चालन", c5: "दुकान", c6: "विद्युत" },
+    ta: { heroTitle: "உங்கள் வேலை, உங்கள் கிராமத்திற்கு அருகில்", heroSub: "குரலால் தேடுங்கள் • WhatsApp Alert", catLabel: "வேலை வகைகள்", nearLabel: "அருகிலுள்ள வேலைகள்", statWL: "தொழிலாளர்கள்", statJL: "வேலைகள்", statVL: "கிராமங்கள்", c1: "விவசாயம்", c2: "கட்டுமானம்", c3: "நெசவு", c4: "ஓட்டுதல்", c5: "சில்லறை", c6: "மின்சாரம்" }
+  };
+
+  function showToast(msg) {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.style.opacity = "1";
+    t.style.top = "60px";
+    setTimeout(() => { t.style.opacity = "0"; }, 2500);
+  }
+
+  function getLocalOwnerId() {
+    const key = "kaamsetu_local_owner_uid";
+    try {
+      let id = localStorage.getItem(key);
+      if (!id) {
+        id = "localUser_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+        localStorage.setItem(key, id);
+      }
+      return id;
+    } catch (e) {
+      return "localUser_ephemeral";
+    }
+  }
+
+  function openChannel() {
+    showToast("WhatsApp Channel khul raha hai...");
+    window.open(WA_CHANNEL, "_blank");
+  }
+
+  function setLang(l, btn) {
+    document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+    if (btn) btn.classList.add("active");
+    const t = LANGS[l] || LANGS.en;
+    Object.keys(t).forEach(k => {
+      const el = document.getElementById(k);
+      if (el) el.textContent = t[k];
+    });
+  }
+
+  function switchTab(name) {
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".bnav").forEach(b => b.classList.remove("active"));
+    document.getElementById("screen-" + name).classList.add("active");
+    const t = document.getElementById("tab-" + name); if (t) t.classList.add("active");
+    const b = document.getElementById("bnav-" + name); if (b) b.classList.add("active");
+    if (name === "jobs") renderJobs();
+    if (name === "post") renderMyJobs();
+  }
+
+  function doSearch() {
+    const q = document.getElementById("searchInput").value.trim();
+    if (!q) return;
+    switchTab("jobs");
+    document.getElementById("jobSearch").value = q;
+    renderJobs();
+  }
+
+  function filterCat(cat) {
+    switchTab("jobs");
+    document.getElementById("jobFilter").value = cat;
+    renderJobs();
+  }
+
+  function sanitizeHtml(value) {
+    return String(value || "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  }
+
+  function renderJobs() {
+    const q = (document.getElementById("jobSearch").value || "").toLowerCase();
+    const f = document.getElementById("jobFilter").value;
+    const all = [...jobs, ...myPostedJobs];
+    const filtered = all.filter(j => {
+      const mq = !q || j.title.toLowerCase().includes(q) || (j.titleHi || "").includes(q) || j.cat.toLowerCase().includes(q) || j.loc.toLowerCase().includes(q);
+      const mf = !f || j.cat === f;
+      return mq && mf;
+    });
+
+    const c = document.getElementById("jobsContainer");
+    if (!filtered.length) {
+      c.innerHTML = '<div style="text-align:center;padding:32px;color:var(--color-text-secondary);font-size:13px;">Koi job nahi mili<br><br><button class="btn-green" onclick="switchTab(\'ai\')">AI se madad lo</button></div>';
+      return;
+    }
+
+    c.innerHTML = filtered.map(j => {
+      const safeTitle = sanitizeHtml(j.title);
+      const encodedTitle = encodeURIComponent(j.title);
+      return `
+    <div class="card job-card ${j.urgent ? "urgent" : ""}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+        <div style="display:flex;gap:10px;align-items:center;">
+          <span style="font-size:22px;">${catIcons[j.cat] || "💼"}</span>
+          <div>
+            <div style="font-weight:600;font-size:13px;">${safeTitle}</div>
+            <div style="font-size:10px;color:var(--color-text-secondary);margin-top:1px;">📍 ${sanitizeHtml(j.loc)} • ${j.dist}km away</div>
+            ${j.titleHi ? `<div style="font-size:10px;color:var(--color-text-secondary);">${sanitizeHtml(j.titleHi)}</div>` : ""}
+          </div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          <div style="font-weight:600;color:var(--green-mid);font-size:14px;">₹${j.wage}/day</div>
+          ${j.verified ? '<span class="posted-tag">✓ Verified</span>' : ""}
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:8px;line-height:1.5;">${sanitizeHtml(j.desc || "")}</div>
+      <div style="display:flex;gap:4px;align-items:center;margin-bottom:8px;flex-wrap:wrap;">
+        <span class="badge" style="background:var(--color-background-secondary);color:var(--color-text-secondary);">👥 ${j.workers} needed</span>
+        ${j.urgent ? '<span class="urgent-tag">Urgent</span>' : ""}
+        <span style="font-size:10px;color:var(--color-text-secondary);margin-left:auto;">by ${sanitizeHtml(j.posted || "Unknown")}</span>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <button class="btn-apply" onclick="applyJob('${String(j.id)}','${encodedTitle}')">Apply</button>
+        <button onclick="openChannel()" class="wa-channel-chip">Job Alerts</button>
+        <button style="background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:8px;width:34px;height:34px;font-size:13px;cursor:pointer;" onclick="shareJob('${encodedTitle}')">Share</button>
+      </div>
+    </div>`;
+    }).join("");
+  }
+
+  function renderMyJobs() {
+    const c = document.getElementById("myJobs");
+    if (!myPostedJobs.length) {
+      c.innerHTML = '<div style="text-align:center;padding:20px;color:var(--color-text-secondary);font-size:12px;">Abhi koi job post nahi ki</div>';
+      return;
+    }
+
+    c.innerHTML = myPostedJobs.map(j => {
+      const canDelete = db
+        ? (auth && auth.currentUser && j.ownerUid && j.ownerUid === auth.currentUser.uid)
+        : (j.ownerUid && j.ownerUid === getLocalOwnerId());
+      const delBtn = canDelete
+        ? `<button type="button" style="background:none;border:none;cursor:pointer;font-size:16px;" onclick="deleteJob('${String(j.id)}')" title="Delete">🗑</button>`
+        : "";
+      return `
+    <div class="card" style="border-left:3px solid var(--amber);">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div><div style="font-weight:600;font-size:13px;">${catIcons[j.cat] || "💼"} ${sanitizeHtml(j.title)}</div><div style="font-size:11px;color:var(--color-text-secondary);">📍 ${sanitizeHtml(j.loc)} • ₹${j.wage}/day • ${j.workers} workers</div></div>
+        ${delBtn}
+      </div>
+      ${j.urgent ? '<span class="urgent-tag" style="margin-top:6px;display:inline-block;">Urgent</span>' : ""}
+    </div>`;
+    }).join("");
+  }
+
+  async function applyJob(id, encodedTitle) {
+    const title = decodeURIComponent(encodedTitle || "");
+    showToast("Apply form khul raha hai...");
+    window.open(APPLY_FORM_URL, "_blank");
+    const all = [...jobs, ...myPostedJobs];
+    const j = all.find(x => String(x.id) === String(id));
+    if (j && j.workers > 0) j.workers--;
+    await recordApplyEvent(id, title);
+  }
+
+  function shareJob(encodedTitle) {
+    const title = decodeURIComponent(encodedTitle || "");
+    showToast("Shared: " + title);
+  }
+
+  async function postJob() {
+    const title = document.getElementById("pTitle").value.trim();
+    const cat = document.getElementById("pCat").value;
+    const wage = document.getElementById("pWage").value;
+    const loc = document.getElementById("pLoc").value.trim();
+    const desc = document.getElementById("pDesc").value.trim();
+    const urgent = document.getElementById("pUrgent").checked;
+    const count = document.getElementById("pCount").value || 1;
+
+    if (!title || !cat || !wage || !loc) { showToast("Required fields fill karein"); return; }
+
+    const latValue = parseFloat(document.getElementById("pLat").value);
+    const lngValue = parseFloat(document.getElementById("pLng").value);
+    const coords = Number.isFinite(latValue) && Number.isFinite(lngValue) ? { lat: latValue, lng: lngValue } : null;
+    if (db && auth && !auth.currentUser) { showToast("Session ready ho raha hai, 1 second baad try karein"); return; }
+    const uid = db
+      ? (auth && auth.currentUser ? auth.currentUser.uid : null)
+      : getLocalOwnerId();
+    const phone = auth && auth.currentUser && auth.currentUser.phoneNumber
+      ? auth.currentUser.phoneNumber
+      : (loginSession.phone || "");
+    const payload = {
+      title, cat, wage: parseInt(wage, 10), loc, desc, urgent,
+      workers: parseInt(count, 10), dist: (Math.random() * 5 + 1).toFixed(1) * 1,
+      posted: "You",
+      verified: false,
+      ownerUid: uid,
+      ownerPhone: phone || null,
+      coords, createdAt: serverTimestamp()
+    };
+
+    try {
+      if (db) {
+        await db.collection("jobs").add(payload);
+      } else {
+        const localId = "local_" + Date.now();
+        allJobsCache.unshift({ ...payload, id: localId, ownerUid: uid });
+        syncJobViews();
+      }
+      ["pTitle", "pWage", "pLoc", "pDesc", "pCount", "pLat", "pLng"].forEach(id => document.getElementById(id).value = "");
+      document.getElementById("pCat").value = "";
+      document.getElementById("pUrgent").checked = false;
+      showToast("Job posted!");
+    } catch (e) {
+      showToast("Job post failed");
+    }
+  }
+
+  async function deleteJob(id) {
+    try {
+      const target = allJobsCache.find((j) => String(j.id) === String(id));
+      if (target) {
+        if (db && auth && auth.currentUser) {
+          if (!target.ownerUid || target.ownerUid !== auth.currentUser.uid) {
+            showToast("Sirf apni post delete kar sakte ho");
+            return;
+          }
+        } else if (!db) {
+          if (!target.ownerUid || target.ownerUid !== getLocalOwnerId()) {
+            showToast("Sirf apni post delete kar sakte ho");
+            return;
+          }
+        }
+      }
+      if (db) {
+        await db.collection("jobs").doc(String(id)).delete();
+      } else {
+        allJobsCache = allJobsCache.filter((job) => String(job.id) !== String(id));
+        syncJobViews();
+      }
+      showToast("Deleted");
+    } catch (e) {
+      showToast("Delete failed");
+    }
+  }
+
+  async function sendAI() {
+    const input = document.getElementById("aiInput");
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    input.value = "";
+    appendMsg(msg, "user");
+    conversationHistory.push({ role: "user", content: msg });
+    const loadingId = appendMsg("⏳ Soch raha hoon...", "ai");
+
+    const geminiKey = (document.getElementById("geminiApiKey")?.value || "").trim() || window._GEMINI_KEY || "";
+
+    // 1️⃣ Try local server /api/chat first (when node server.js is running)
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 2500);
+      const res = await fetch(AI_CHATBOT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: conversationHistory }),
+        signal: ctrl.signal
+      });
+      clearTimeout(timer);
+      if (res.ok) {
+        const data = await res.json();
+        const reply = data.reply || "AI response nahi aaya.";
+        conversationHistory.push({ role: "assistant", content: reply });
+        updateMsg(loadingId, reply);
+        const lbl = document.getElementById("aiStatusLabel");
+        if (lbl) lbl.textContent = "🟢 Server AI";
+        return;
+      }
+    } catch (e) { /* server not running */ }
+
+    // 2️⃣ Try browser Gemini key
+    if (geminiKey) {
+      try {
+        const systemP = `Aap KaamSetu ke AI assistant hain. Rural job portal India ke liye. Hindi/English/Marathi mein jawab do. Helpful aur practical raho.`;
+        const ctx = conversationHistory.slice(-6).map(m => ({
+          role: m.role === "assistant" ? "model" : "user",
+          parts: [{ text: m.content }]
+        }));
+        if (ctx.length > 0) ctx[0].parts[0].text = systemP + "\n\n" + ctx[0].parts[0].text;
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ contents: ctx })
+        });
+        const data = await res.json();
+        if (data.error) throw new Error(data.error.message);
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Jawab nahi aaya.";
+        conversationHistory.push({ role: "assistant", content: reply });
+        updateMsg(loadingId, reply);
+        const lbl = document.getElementById("aiStatusLabel");
+        if (lbl) lbl.textContent = "🟢 Gemini AI";
+        return;
+      } catch (e) {
+        updateMsg(loadingId, "⚠️ Error: " + e.message);
+        return;
+      }
+    }
+
+    // 3️⃣ Smart local answers (no key needed)
+    const lm = msg.toLowerCase();
+    let reply = "";
+    if (lm.includes("mgnrega") || lm.includes("mnrega"))
+      reply = "🏛️ MGNREGA:\n• 100 din guaranteed kaam\n• Wage ₹220-350/day\n• Gram Panchayat mein apply karo\n• Docs: Aadhaar + bank account\n• Helpline: 1800-345-22-44";
+    else if (lm.includes("wage") || lm.includes("salary") || lm.includes("kitna") || lm.includes("paisa"))
+      reply = "💰 Wage Guide:\n• Kheti: ₹350-550/day\n• Construction: ₹400-600/day\n• Driving: ₹500-700/day\n• Electrical: ₹450-650/day\n• Cooking: ₹300-450/day";
+    else if (lm.includes("resume") || lm.includes("profile"))
+      reply = "📄 Profile banana:\n1. Naam, gaon, phone likho\n2. Skills list karo\n3. Experience mention karo\n4. Padha nahi toh Voice Bio use karo!";
+    else if (lm.includes("fraud") || lm.includes("thag") || lm.includes("safe"))
+      reply = "🛡️ Fraud se bachao:\n✅ Wage pehle confirm karo\n✅ Panchayat verified contractor chunno\n❌ Pehle paise mat do\n❌ Aadhaar copy mat do\n📞 Helpline: 14434";
+    else if (lm.includes("kaam") || lm.includes("job"))
+      reply = "🔍 Kaam dhundhne ke tarike:\n1. Jobs tab mein dekho\n2. Category filter use karo\n3. WhatsApp Channel join karo\n4. Voice search use karo 🎙";
+    else
+      reply = "Namaste! 🙏 Main KaamSetu AI hoon.\n\nPoochh sakte ho:\n• MGNREGA kya hai?\n• Wage kitna milega?\n• Kaam kaise dhundhuun?\n• Resume kaise banaaun?\n• Fraud se kaise bachun?\n\n💡 Real AI ke liye AI tab mein Gemini key daalo!";
+    conversationHistory.push({ role: "assistant", content: reply });
+    updateMsg(loadingId, reply);
+  }
+
+  function quickQ(q) { document.getElementById("aiInput").value = q; sendAI(); }
+
+  async function aiWriteJob() {
+    const title = document.getElementById("pTitle").value || "kaam";
+    const cat = document.getElementById("pCat").value || "general";
+    const wage = document.getElementById("pWage").value || "negotiable";
+    const loc = document.getElementById("pLoc").value || "UP";
+    switchTab("ai");
+    document.getElementById("aiInput").value = `Mere liye ek job description likho: Title: ${title}, Category: ${cat}, Wage: ₹${wage}/day, Location: ${loc}.`;
+    await sendAI();
+  }
+
+  async function aiJobMatch() {
+    const skills = document.getElementById("skillInput").value.trim();
+    if (!skills) { showToast("Skills enter karo pehle"); return; }
+    document.getElementById("aiInput").value = `Meri skills: ${skills}. Best suited jobs suggest karo.`;
+    await sendAI();
+  }
+
+  function appendMsg(text, type) {
+    const msgs = document.getElementById("aiMessages");
+    const id = "msg_" + Date.now();
+    const div = document.createElement("div");
+    div.className = "msg " + type;
+    div.id = id;
+    div.innerHTML = sanitizeHtml(text).replace(/\n/g, "<br>");
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+    return id;
+  }
+
+  function updateMsg(id, text) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.className = "msg ai";
+      el.innerHTML = sanitizeHtml(text).replace(/\n/g, "<br>");
+    }
+    document.getElementById("aiMessages").scrollTop = 99999;
+  }
+
+  function toggleVoice() {
+    voiceActive = !voiceActive;
+    const btn = document.getElementById("voiceBtn");
+    if (!voiceActive) { btn.style.background = "var(--green-mid)"; btn.textContent = "🎙"; return; }
+    btn.style.background = "#E24B4A";
+    btn.textContent = "⏹";
+    if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
+      showToast("Voice supported nahi hai");
+      voiceActive = false;
+      btn.style.background = "var(--green-mid)";
+      btn.textContent = "🎙";
+      return;
+    }
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const rec = new SR();
+    rec.lang = "hi-IN";
+    rec.continuous = false;
+    rec.onresult = e => { document.getElementById("searchInput").value = e.results[0][0].transcript; };
+    rec.onend = () => { voiceActive = false; btn.style.background = "var(--green-mid)"; btn.textContent = "🎙"; };
+    rec.onerror = rec.onend;
+    rec.start();
+  }
+
+  function buildWave() {
+    const w = document.getElementById("waveBars");
+    w.innerHTML = "";
+    for (let i = 0; i < 28; i++) {
+      const b = document.createElement("div");
+      b.className = "wave-bar";
+      b.style.height = (Math.sin(i * 0.5) * 10 + 14) + "px";
+      w.appendChild(b);
+    }
+  }
+
+  function toggleRecord() {
+    isRecording = !isRecording;
+    const btn = document.getElementById("recBtn");
+    const st = document.getElementById("recStatus");
+    if (isRecording) {
+      btn.textContent = "⏹ Stop";
+      btn.style.background = "#E24B4A";
+      let s = 0;
+      st.style.color = "#A32D2D";
+      recTimer = setInterval(() => { s++; st.textContent = "⏺ " + s + "/30 sec"; if (s >= 30) toggleRecord(); }, 1000);
+      waveTimer = setInterval(() => {
+        document.querySelectorAll(".wave-bar").forEach(b => { b.style.height = (Math.random() * 28 + 6) + "px"; b.style.background = "#E24B4A"; });
+      }, 100);
+    } else {
+      clearInterval(recTimer);
+      clearInterval(waveTimer);
+      btn.textContent = "🎙 Record Bio";
+      btn.style.background = "var(--green-mid)";
+      st.textContent = "Saved!";
+      st.style.color = "var(--green-mid)";
+      buildWave();
+      showToast("Voice bio saved!");
+    }
+  }
+
+  function addSkill() {
+    const s = document.getElementById("newSkill").value.trim();
+    if (!s) return;
+    const tags = document.getElementById("skillTags");
+    const colors = [["#EAF3DE", "#27500A"], ["#FAECE7", "#993C1D"], ["#E3F2FD", "#0C447C"], ["#EEEDFE", "#3C3489"], ["#FAEEDA", "#633806"]];
+    const [bg, fg] = colors[Math.floor(Math.random() * colors.length)];
+    const span = document.createElement("span");
+    span.className = "badge";
+    span.style.background = bg;
+    span.style.color = fg;
+    span.textContent = "🛠 " + s;
+    span.style.cursor = "pointer";
+    span.onclick = () => span.remove();
+    tags.appendChild(span);
+    document.getElementById("newSkill").value = "";
+    showToast("Skill added: " + s);
+  }
+
+  function openAIChatbot() {
+    showToast("In-app AI ready hai. Niche message bhejein.");
+  }
+
+  function saveGeminiKey(key) {
+    window._GEMINI_KEY = key;
+    try {
+      if (key) localStorage.setItem("ks_gemini_key", key);
+      else localStorage.removeItem("ks_gemini_key");
+    } catch (e) { }
+    const st = document.getElementById("geminiStatus");
+    if (st) st.textContent = key ? "🟡 Key saved — Test karo" : "Key nahi hai — local answers chal rahe hain";
+    const lbl = document.getElementById("aiStatusLabel");
+    if (lbl) lbl.textContent = key ? "Gemini AI" : "Local Mode";
+  }
+
+  async function testGeminiKey() {
+    const key = (document.getElementById("geminiApiKey")?.value || "").trim();
+    if (!key) { showToast("Pehle key daalo"); return; }
+    const st = document.getElementById("geminiStatus");
+    if (st) { st.textContent = "⏳ Testing..."; st.style.color = "var(--color-text-secondary)"; }
+    try {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: "Say: KaamSetu AI ready!" }] }] })
+      });
+      const d = await res.json();
+      if (d.error) throw new Error(d.error.message);
+      if (st) { st.textContent = "✅ Key kaam kar rahi hai! Real AI shuru."; st.style.color = "var(--green-mid)"; }
+      saveGeminiKey(key);
+      showToast("✅ Gemini AI connected! Ab real answers milenge.");
+    } catch (e) {
+      if (st) { st.textContent = "❌ Key galat: " + e.message; st.style.color = "var(--red)"; }
+      showToast("❌ Key kaam nahi kar rahi");
+    }
+  }
+
+  function ensureRecaptcha() {
+    if (!auth) return null;
+    if (recaptchaVerifier) return recaptchaVerifier;
+    recaptchaVerifier = new firebase.auth.RecaptchaVerifier("recaptcha-container", { size: "normal" });
+    return recaptchaVerifier;
+  }
+
+  function renderLoggedOutAuthUI() {
+    const box = document.getElementById("loginBox");
+    if (!box) return;
+    box.innerHTML = `<div class="form-group">
+      <label class="form-label">Mobile Number</label>
+      <input class="form-input" id="loginPhone" placeholder="10 digit number" maxlength="10" />
+    </div>
+    <button class="btn-green btn-full" onclick="sendOtp()">Send OTP</button>
+    <div id="recaptcha-container" style="margin-top:8px;"></div>
+    <div id="otpWrap" style="display:none;margin-top:8px;">
+      <input class="form-input" id="loginOtp" placeholder="Enter OTP" maxlength="6" />
+      <button class="btn-outline btn-full" onclick="verifyOtp()">Verify OTP</button>
+    </div>`;
+  }
+
+  function renderAuthUI() {
+    const box = document.getElementById("loginBox");
+    if (!box) return;
+    if (loginSession.isLoggedIn) {
+      box.innerHTML = `<div style="font-size:12px;margin-bottom:8px;">${sanitizeHtml(loginSession.phone)}</div>
+      <button class="btn-outline btn-full" onclick="logoutUser()">Logout</button>`;
+    } else {
+      renderLoggedOutAuthUI();
+    }
+  }
+
+  let _pendingOtp = null;
+  let _pendingPhone = null;
+
+  async function sendOtp() {
+    const phone = (document.getElementById("loginPhone")?.value || "").trim();
+    if (!/^\d{10}$/.test(phone)) { showToast("10 anko ka mobile number daalo"); return; }
+
+    // Try real Firebase Phone Auth first
+    if (auth) {
+      try {
+        const appVerifier = ensureRecaptcha();
+        confirmationResult = await auth.signInWithPhoneNumber("+91" + phone, appVerifier);
+        document.getElementById("otpWrap").style.display = "block";
+        showToast("✅ OTP aapke " + phone + " pe bheja gaya!");
+        document.getElementById("loginStatus").textContent = "OTP sent to +91" + phone;
+        document.getElementById("loginStatus").style.color = "var(--amber)";
+        return;
+      } catch (e) { /* fall through */ }
+    }
+
+    // Generate 6-digit OTP
+    _pendingOtp = String(Math.floor(100000 + Math.random() * 900000));
+    _pendingPhone = "+91" + phone;
+
+    const fast2smsKey = window._FAST2SMS_KEY || "";
+
+    if (fast2smsKey) {
+      // Real SMS via Fast2SMS
+      try {
+        document.getElementById("loginStatus").textContent = "⏳ SMS bhej raha hoon...";
+        document.getElementById("loginStatus").style.color = "var(--amber)";
+        const msg = encodeURIComponent("KaamSetu Login OTP: " + _pendingOtp + ". Valid for 10 minutes. Do not share.");
+        const url = `https://www.fast2sms.com/dev/bulkV2?authorization=${fast2smsKey}&route=q&numbers=${phone}&message=${msg}&flash=0`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if (data.return === true) {
+          document.getElementById("otpWrap").style.display = "block";
+          document.getElementById("loginStatus").textContent = "✅ OTP bheja gaya: +91" + phone;
+          document.getElementById("loginStatus").style.color = "var(--green-mid)";
+          showToast("✅ OTP +91" + phone + " pe bheja gaya! SMS check karo.");
+          return;
+        } else {
+          throw new Error(data.message || "SMS failed");
+        }
+      } catch (e) {
+        showToast("SMS fail: " + e.message + " — OTP screen pe dikh raha hai");
+      }
+    }
+
+    // Fallback: show OTP on screen
+    document.getElementById("otpWrap").style.display = "block";
+    const otpInput = document.getElementById("otpWrap").querySelector("input");
+    if (otpInput) otpInput.placeholder = "OTP: " + _pendingOtp + " (enter karo)";
+    showToast("OTP: " + _pendingOtp + "  ← yahi daalo");
+    document.getElementById("loginStatus").textContent = "OTP screen pe dikh raha hai (Fast2SMS key add karo real SMS ke liye)";
+    document.getElementById("loginStatus").style.color = "var(--amber)";
+  }
+
+  async function verifyOtp() {
+    const otp = (document.getElementById("loginOtp")?.value || "").trim();
+    if (!otp) { showToast("OTP daalo pehle"); return; }
+
+    // Firebase auth verify
+    if (auth && confirmationResult) {
+      try {
+        const result = await confirmationResult.confirm(otp);
+        const user = result.user;
+        loginSession = { isLoggedIn: true, phone: user.phoneNumber || _pendingPhone, uid: user.uid };
+        await upsertUserProfile(user);
+        await logLoginEvent(user);
+        renderAuthUI();
+        syncJobViews();
+        document.getElementById("loginStatus").textContent = "✅ Logged in: " + loginSession.phone;
+        document.getElementById("loginStatus").style.color = "var(--green-mid)";
+        showToast("✅ Login successful! Swagat hai 🙏");
+        notifyLogin(loginSession);
+        loadSavedAudio();
+        return;
+      } catch (e) { showToast("OTP galat hai, dobara try karo"); return; }
+    }
+
+    // 2Factor server verify
+    const phone = (_pendingPhone || "").replace("+91", "");
+    if (!phone) { showToast("Pehle OTP bhejo"); return; }
+    try {
+      document.getElementById("loginStatus").textContent = "⏳ OTP verify ho raha hai...";
+      const res = await fetch("/api/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone, otp })
+      });
+      const data = await res.json();
+      if (data.return === true) {
+        const uid = "local_" + phone;
+        loginSession = { isLoggedIn: true, phone: _pendingPhone, uid };
+        try { localStorage.setItem("ks_session", JSON.stringify(loginSession)); } catch (e) { }
+        renderAuthUI();
+        syncJobViews();
+        document.getElementById("loginStatus").textContent = "✅ Logged in: " + _pendingPhone;
+        document.getElementById("loginStatus").style.color = "var(--green-mid)";
+        _pendingPhone = null;
+        showToast("✅ Login successful! Swagat hai 🙏");
+        notifyLogin(loginSession);
+        loadSavedAudio();
+      } else {
+        showToast("❌ " + (data.message || "OTP galat hai"));
+        document.getElementById("loginStatus").textContent = "❌ " + (data.message || "Galat OTP");
+        document.getElementById("loginStatus").style.color = "var(--red)";
+      }
+    } catch (e) {
+      showToast("❌ Server error: " + e.message);
+    }
+  }
+
+  function logoutUser() {
+    loginSession = { isLoggedIn: false, phone: "", uid: "" };
+    confirmationResult = null;
+    recaptchaVerifier = null;
+    if (auth) {
+      auth.signOut().finally(() => {
+        auth.signInAnonymously().catch(() => { });
+      });
+    }
+    renderAuthUI();
+    document.getElementById("loginStatus").textContent = "Not logged in";
+    document.getElementById("loginStatus").style.color = "var(--color-text-secondary)";
+    showToast("Logged out");
+  }
+
+  async function enableLocationAlerts() {
+    if (!("geolocation" in navigator)) { showToast("Location support nahi hai"); return; }
+    try {
+      const pos = await new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true, timeout: 10000 }));
+      userLocation = { latitude: pos.coords.latitude, longitude: pos.coords.longitude };
+      nearbyAlertsEnabled = true;
+      if ("Notification" in window && Notification.permission === "default") await Notification.requestPermission();
+      if (db && loginSession.uid) {
+        await db.collection("users").doc(loginSession.uid).set({
+          location: userLocation,
+          locationUpdatedAt: serverTimestamp(),
+          nearbyAlertsEnabled: true
+        }, { merge: true });
+      }
+      const txt = document.getElementById("locState");
+      if (txt) txt.textContent = `Enabled: ${userLocation.latitude.toFixed(4)}, ${userLocation.longitude.toFixed(4)}`;
+      showToast("Location access enabled");
+    } catch (e) {
+      showToast("Location permission deny ho gaya");
+    }
+  }
+
+  function haversineKm(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
+  function notifyIfNearby(job) {
+    if (!nearbyAlertsEnabled || !userLocation || !job.coords) return;
+    const km = haversineKm(userLocation.latitude, userLocation.longitude, job.coords.lat, job.coords.lng);
+    if (km > 5 || seenNearbyJobs.has(String(job.id))) return;
+    seenNearbyJobs.add(String(job.id));
+    showToast(`Nearby post: ${job.title} (${km.toFixed(1)} km)`);
+    if ("Notification" in window && Notification.permission === "granted") {
+      new Notification("Nearby KaamSetu Job", { body: `${job.title} at ${job.loc} (${km.toFixed(1)} km)` });
+    }
+  }
+
+  function syncJobViews() {
+    const uid = db
+      ? (auth && auth.currentUser ? auth.currentUser.uid : "")
+      : getLocalOwnerId();
+    jobs = allJobsCache.filter((x) => !x.ownerUid);
+    myPostedJobs = allJobsCache.filter((x) => x.ownerUid && x.ownerUid === uid);
+    renderJobs();
+    renderMyJobs();
+  }
+
+  async function upsertUserProfile(user) {
+    if (!db) return;
+    await db.collection("users").doc(user.uid).set({
+      phone: user.phoneNumber || "",
+      emailAlertTarget: ADMIN_EMAIL,
+      lastLoginAt: serverTimestamp()
+    }, { merge: true });
+  }
+
+  async function logLoginEvent(user) {
+    if (!db) return;
+    await db.collection("login_events").add({
+      uid: user.uid,
+      phone: user.phoneNumber || "",
+      emailTarget: ADMIN_EMAIL,
+      createdAt: serverTimestamp(),
+      userAgent: navigator.userAgent
+    });
+  }
+
+  async function recordApplyEvent(jobId, title) {
+    if (!db) return;
+    await db.collection("apply_events").add({
+      uid: auth && auth.currentUser ? auth.currentUser.uid : null,
+      jobId: String(jobId),
+      title,
+      createdAt: serverTimestamp()
+    });
+  }
+
+  function attachJobListeners() {
+    if (!db) {
+      allJobsCache = [...DEMO_JOBS];
+      syncJobViews();
+      return;
+    }
+    if (unsubscribeJobs) unsubscribeJobs();
+    unsubscribeJobs = db.collection("jobs").orderBy("createdAt", "desc").onSnapshot((snap) => {
+      const list = [];
+      snap.forEach((doc) => {
+        const d = doc.data();
+        list.push({
+          id: doc.id,
+          title: d.title || "",
+          titleHi: d.titleHi || "",
+          cat: d.cat || "General",
+          wage: d.wage || 0,
+          loc: d.loc || "",
+          dist: d.dist || 0,
+          verified: !!d.verified,
+          urgent: !!d.urgent,
+          desc: d.desc || "",
+          posted: d.posted || "Unknown",
+          workers: d.workers || 1,
+          coords: d.coords || null,
+          ownerUid: d.ownerUid || ""
+        });
+      });
+      allJobsCache = list;
+      syncJobViews();
+      if (nearbyAlertsEnabled && userLocation) list.forEach(notifyIfNearby);
+    }, () => showToast("Jobs load issue"));
+  }
+
+  async function seedJobsIfEmpty() {
+    if (!db) {
+      allJobsCache = [...DEMO_JOBS];
+      return;
+    }
+    const snapshot = await db.collection("jobs").limit(1).get();
+    if (!snapshot.empty) return;
+    const batch = db.batch();
+    const seeds = [
+      { title: "Paddy Harvesting Workers", titleHi: "धान की कटाई मज़दूर", cat: "Agriculture", wage: 500, loc: "Raebareli, UP", dist: 2.3, verified: true, urgent: true, desc: "5 workers needed for 7 days paddy harvesting.", posted: "Ramesh Kumar", workers: 5 },
+      { title: "House Construction Labour", titleHi: "मकान निर्माण मज़दूर", cat: "Construction", wage: 450, loc: "Salon, UP", dist: 4.1, verified: true, urgent: false, desc: "Need 3 skilled masons for 2-floor house construction.", posted: "Ramesh Contractor", workers: 3 },
+      { title: "Tractor Driver", titleHi: "ट्रैक्टर चालक", cat: "Driving", wage: 600, loc: "Amethi, UP", dist: 6.8, verified: false, urgent: true, desc: "Experienced tractor driver for field plowing.", posted: "Kisaan Cooperative", workers: 1 }
+    ];
+    seeds.forEach((job) => {
+      const ref = db.collection("jobs").doc();
+      batch.set(ref, { ...job, createdAt: serverTimestamp() });
+    });
+    await batch.commit();
+  }
+
+  if (auth) {
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        loginSession = { isLoggedIn: true, phone: user.phoneNumber || "", uid: user.uid };
+        const st = document.getElementById("loginStatus");
+        if (user.phoneNumber) {
+          st.textContent = `Phone login: ${user.phoneNumber}`;
+        } else if (user.isAnonymous) {
+          st.textContent = "Ready (no phone login required)";
+        } else {
+          st.textContent = "Ready";
+        }
+        st.style.color = "var(--green-mid)";
+        await upsertUserProfile(user);
+      } else {
+        loginSession = { isLoggedIn: false, phone: "", uid: "" };
+        document.getElementById("loginStatus").textContent = "Not connected";
+        document.getElementById("loginStatus").style.color = "var(--color-text-secondary)";
+      }
+      renderAuthUI();
+      syncJobViews();
+    });
+    if (!auth.currentUser) {
+      auth.signInAnonymously().catch(() => {
+        showToast("Auto session start failed — enable Anonymous sign-in in Firebase");
+      });
+    }
+  } else {
+    // Restore session from localStorage
+    try {
+      const saved = localStorage.getItem("ks_session");
+      if (saved) loginSession = JSON.parse(saved);
+    } catch (e) { }
+    renderAuthUI();
+    if (loginSession.isLoggedIn) {
+      document.getElementById("loginStatus").textContent = "✅ Logged in: " + loginSession.phone;
+      document.getElementById("loginStatus").style.color = "var(--green-mid)";
+    } else {
+      document.getElementById("loginStatus").textContent = "Login karein — OTP aayega";
+      document.getElementById("loginStatus").style.color = "var(--amber)";
+    }
+  }
+
+  // Restore Gemini key
+  try {
+    const k = localStorage.getItem("ks_gemini_key");
+    if (k && document.getElementById("geminiApiKey")) {
+      window._GEMINI_KEY = k;
+      document.getElementById("geminiApiKey").value = k;
+      const lbl = document.getElementById("aiStatusLabel");
+      if (lbl) lbl.textContent = "Gemini AI";
+    }
+  } catch (e) { }
+
+  // ================================================================
+  //  AUDIO RECORDING + PLAYBACK
+  // ================================================================
+  let mediaRecorder = null;
+  let audioChunks = [];
+  let recordingTimer = null;
+  let recordingSeconds = 0;
+
+  function buildWaveAnimator() {
+    const bars = document.querySelectorAll(".wave-bar");
+    if (!bars.length) return;
+    bars.forEach(b => {
+      b.style.height = (8 + Math.random() * 22) + "px";
+    });
+  }
+
+  async function toggleRecord() {
+    const btn = document.getElementById("recBtn");
+    const status = document.getElementById("recStatus");
+    const saveStatus = document.getElementById("recSaveStatus");
+
+    if (mediaRecorder && mediaRecorder.state === "recording") {
+      // STOP recording
+      mediaRecorder.stop();
+      clearInterval(recordingTimer);
+      btn.textContent = "\ud83c\udf99 Record Bio";
+      btn.style.background = "var(--green-mid)";
+      status.textContent = "Processing...";
+      return;
+    }
+
+    // START recording
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioChunks = [];
+      mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
+
+      mediaRecorder.ondataavailable = e => {
+        if (e.data.size > 0) audioChunks.push(e.data);
+      };
+
+      mediaRecorder.onstop = async () => {
+        stream.getTracks().forEach(t => t.stop());
+        const blob = new Blob(audioChunks, { type: "audio/webm" });
+
+        // Show player immediately (local preview)
+        const url = URL.createObjectURL(blob);
+        const player = document.getElementById("bioPlayer");
+        player.src = url;
+        document.getElementById("audioPlayerWrap").style.display = "block";
+        document.getElementById("playBioBtn").style.display = "block";
+        status.textContent = "\u2705 Recording done! Save ho raha hai...";
+        status.style.color = "var(--green-mid)";
+
+        // Save audio to localStorage (base64 fallback)
+        const reader = new FileReader();
+        reader.onload = () => {
+          try { localStorage.setItem("ks_audio_bio", reader.result); } catch (e) { }
+        };
+        reader.readAsDataURL(blob);
+
+        // Save to server (if logged in)
+        const phone = (loginSession.phone || "").replace(/\D/g, "");
+        if (phone) {
+          try {
+            const ab = await blob.arrayBuffer();
+            const r = await fetch("/api/save-audio", {
+              method: "POST",
+              headers: { "Content-Type": "audio/webm", "x-phone": phone },
+              body: ab
+            });
+            const d = await r.json();
+            if (d.ok) {
+              saveStatus.textContent = "\u2705 Audio server pe save ho gaya!";
+              saveStatus.style.color = "var(--green-mid)";
+            }
+          } catch (e) {
+            saveStatus.textContent = "Server save failed, locally saved";
+          }
+        } else {
+          saveStatus.textContent = "Login karo tab server pe save hoga";
+          saveStatus.style.color = "var(--amber)";
+        }
+      };
+
+      mediaRecorder.start(100);
+      recordingSeconds = 0;
+      btn.style.background = "#E24B4A";
+      btn.textContent = "\u23f9 Stop Recording";
+      saveStatus.textContent = "";
+
+      recordingTimer = setInterval(() => {
+        recordingSeconds++;
+        status.textContent = `\ud83d\udd34 Recording... ${recordingSeconds}s / 30s`;
+        status.style.color = "var(--red)";
+        buildWaveAnimator();
+        if (recordingSeconds >= 30) {
+          mediaRecorder.stop();
+          clearInterval(recordingTimer);
+          btn.textContent = "\ud83c\udf99 Record Bio";
+          btn.style.background = "var(--green-mid)";
+        }
+      }, 1000);
+
+    } catch (e) {
+      showToast("Microphone permission chahiye \u2014 allow karo");
+      status.textContent = "Microphone access denied";
+    }
+  }
+
+  function playBio() {
+    const player = document.getElementById("bioPlayer");
+    if (player && player.src) {
+      player.play();
+      showToast("\u25b6 Playing voice bio...");
+    }
+  }
+
+  // Load saved audio on page open
+  function loadSavedAudio() {
+    // Try from localStorage first
+    const saved = localStorage.getItem("ks_audio_bio");
+    if (saved) {
+      const player = document.getElementById("bioPlayer");
+      if (player) {
+        player.src = saved;
+        document.getElementById("audioPlayerWrap").style.display = "block";
+        document.getElementById("playBioBtn").style.display = "block";
+        document.getElementById("recStatus").textContent = "\u2705 Pehle ka audio loaded hai — replay kar sakte ho";
+        document.getElementById("recStatus").style.color = "var(--green-mid)";
+      }
+    }
+    // Also try server audio if logged in
+    const phone = (loginSession.phone || "").replace(/\D/g, "");
+    if (phone) {
+      const player = document.getElementById("bioPlayer");
+      if (player) {
+        const testUrl = "/api/get-audio?phone=" + phone;
+        fetch(testUrl, { method: "HEAD" }).then(r => {
+          if (r.ok) {
+            player.src = testUrl;
+            document.getElementById("audioPlayerWrap").style.display = "block";
+            document.getElementById("playBioBtn").style.display = "block";
+            document.getElementById("recSaveStatus").textContent = "\u2705 Server se audio load hua";
+            document.getElementById("recSaveStatus").style.color = "var(--green-mid)";
+          }
+        }).catch(() => { });
+      }
+    }
+  }
+
+  // ================================================================
+  //  EMAIL NOTIFY ON LOGIN
+  // ================================================================
+  async function notifyLogin(session) {
+    try {
+      // Collect all profile data
+      const skills = [];
+      document.querySelectorAll("#skillTags .badge").forEach(b => skills.push(b.textContent.trim()));
+
+      await fetch("/api/notify-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          phone: session.phone || "-",
+          name: document.getElementById("profileName")?.textContent || "Not filled",
+          village: document.getElementById("profileVillage")?.textContent || "Not filled",
+          skills: skills.join(", ") || "Not filled",
+          wage: document.getElementById("profileWage")?.textContent || "Not filled",
+          uid: session.uid || "-"
+        })
+      });
+      console.log("\u2705 Login notification bheja");
+    } catch (e) {
+      console.warn("Notify failed:", e.message);
+    }
+  }
+
+  buildWave();
+  loadSavedAudio();
+  seedJobsIfEmpty().then(attachJobListeners);
+</script>
