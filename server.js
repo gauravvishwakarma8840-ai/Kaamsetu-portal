@@ -16,7 +16,7 @@ const ROOT = __dirname;
 //  GEMINI API KEY — yahan apni key daalo (ya env var use karo)
 //  Free key: https://aistudio.google.com/app/apikey
 // ============================================================
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "AIzaSyAjnkOn4--SBqWM7WYMXrdzhCeD7Fu_oCk";
 
 // ============================================================
 //  EMAIL CONFIG — Login hone par data gauravavishwakarma8840@gmail.com pe aayega
@@ -38,12 +38,8 @@ const mailer = nodemailer.createTransport({
 const AUDIO_DIR = path.join(__dirname, "audio_recordings");
 if (!fs.existsSync(AUDIO_DIR)) fs.mkdirSync(AUDIO_DIR);
 
-const FAST2SMS_KEY = process.env.FAST2SMS_KEY || "iXIpqYPFa5werXfgwTzR6svMHy83kH3YJ5fW8bZdWFVnh6Rjhtl3geFKC7FP";
-
-// ============================================================
-//  2FACTOR KEY — backup option (free, https://2factor.in)
-// ============================================================
-const TWOFACTOR_KEY = process.env.TWOFACTOR_KEY || "YOUR_2FACTOR_API_KEY";
+const FAST2SMS_KEY = "DEMO_MODE_ACTIVE";
+const TWOFACTOR_KEY = "DEMO_MODE_ACTIVE";
 
 // In-memory OTP session store  { phone -> { sessionId, expiresAt } }
 const otpSessions = new Map();
@@ -105,50 +101,19 @@ const server = http.createServer(async (req, res) => {
           return;
         }
 
-        // Generate OTP locally
-        const otp = String(Math.floor(100000 + Math.random() * 900000));
-        // Store with expiry
-        otpSessions.set(phone, { otp, expiresAt: Date.now() + 10 * 60 * 1000, via: "local" });
+        // --- PRESENTATION DEMO MODE ---
+        const otp = "123456"; // Fixed OTP
+        otpSessions.set(phone, { otp, expiresAt: Date.now() + 30 * 60 * 1000, via: "demo" });
 
-        // === TRY 1: Fast2SMS (works when balance >= ₹100) ===
-        try {
-          const msg = encodeURIComponent("KaamSetu OTP: " + otp + ". Valid 10 min. Do not share.");
-          const url = `https://www.fast2sms.com/dev/bulkV2?authorization=${FAST2SMS_KEY}&route=q&numbers=${phone}&message=${msg}&flash=0`;
-          const r = await fetch(url);
-          const d = await r.json();
-          if (d.return === true) {
-            console.log("✅ Fast2SMS OTP sent to", phone);
-            res.writeHead(200, { "Content-Type": "application/json" });
-            res.end(JSON.stringify({ return: true, message: "OTP bheja gaya (Fast2SMS)" }));
-            return;
-          }
-          console.warn("Fast2SMS failed:", d.message, "— trying 2Factor");
-        } catch (e) {
-          console.warn("Fast2SMS error:", e.message, "— trying 2Factor");
-        }
-
-        // === TRY 2: 2Factor.in (free trial, koi recharge nahi chahiye) ===
-        if (TWOFACTOR_KEY !== "YOUR_2FACTOR_API_KEY") {
-          try {
-            const url = `https://2factor.in/API/V1/${TWOFACTOR_KEY}/SMS/+91${phone}/${otp}`;
-            const r = await fetch(url);
-            const d = await r.json();
-            if (d.Status === "Success") {
-              console.log("✅ 2Factor OTP sent to", phone);
-              otpSessions.set(phone, { otp, expiresAt: Date.now() + 10 * 60 * 1000, via: "2factor" });
-              res.writeHead(200, { "Content-Type": "application/json" });
-              res.end(JSON.stringify({ return: true, message: "OTP bheja gaya (2Factor)" }));
-              return;
-            }
-            console.warn("2Factor failed:", d.Details);
-          } catch (e) {
-            console.warn("2Factor error:", e.message);
-          }
-        }
-
-        // === BOTH FAILED ===
+        console.log(`✨ [DEMO MODE] OTP for ${phone} is: ${otp}`);
+        
         res.writeHead(200, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ return: false, message: "Fast2SMS: ₹100 balance chahiye. Ya 2Factor.in key add karo server.js mein." }));
+        res.end(JSON.stringify({ 
+          return: true, 
+          message: "Demo Mode Active: Use OTP 123456",
+          isDemo: true 
+        }));
+
       } catch (e) {
         res.writeHead(500, { "Content-Type": "application/json" });
         res.end(JSON.stringify({ return: false, message: e.message }));
