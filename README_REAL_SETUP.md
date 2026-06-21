@@ -9,7 +9,7 @@
 - In Authentication -> Settings -> Authorized domains, add your Netlify domain.
 
 ## 2) Update frontend config
-In `kaamsetu_whatsapp_portal.html`, replace placeholder values in `APP_CONFIG`:
+In `jobs.html`, replace placeholder values in `APP_CONFIG`:
 - `firebaseApiKey`
 - `firebaseAuthDomain`
 - `firebaseProjectId`

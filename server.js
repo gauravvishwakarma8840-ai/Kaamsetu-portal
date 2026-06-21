@@ -268,7 +268,7 @@ const server = http.createServer(async (req, res) => {
   }
 
   // ---- Static files ----
-  let filePath = req.url === "/" ? "/kaamsetu_whatsapp_portal.html" : req.url;
+  let filePath = req.url === "/" ? "/index.html" : req.url;
   filePath = path.join(ROOT, filePath.split("?")[0]);
 
   fs.readFile(filePath, (err, data) => {
