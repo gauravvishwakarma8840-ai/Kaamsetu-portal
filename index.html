@@ -5,6 +5,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>KaamSetu Admin Portal — प्रशासन पैनल</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#3b82f6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="KaamSetu Admin Portal - Empowering rural employment and contractor management across districts.">
+  <meta property="og:title" content="KaamSetu Admin Portal">
+  <meta property="og:description" content="Empowering rural employment and contractor management.">
+  <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/3658/3658392.png">
+  <meta property="og:url" content="https://kaamsetu.in/index.html">
+  <meta name="twitter:card" content="summary_large_image">
   <link
     href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap"
     rel="stylesheet" />
@@ -33,6 +43,29 @@
       --radius-sm: 8px;
       --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
     }
+
+    /* Global Loader */
+    #globalLoader {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(11, 17, 22, 0.85);
+      backdrop-filter: blur(4px);
+      z-index: 9999;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+    .spinner {
+      width: 50px; height: 50px;
+      border: 5px solid rgba(255,255,255,0.2);
+      border-top-color: var(--green-light);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 15px;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
 
     * {
       box-sizing: border-box;
@@ -180,6 +213,261 @@
       background: var(--bg-hover);
       color: var(--text-primary);
     }
+
+    /* Skill Role Cards */
+    .skill-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .skill-card {
+      background: var(--bg-secondary);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .skill-card:hover {
+      border-color: var(--green-light);
+      color: var(--text-primary);
+      background: var(--bg-hover);
+    }
+
+    .skill-card.selected {
+      background: rgba(76,175,80,0.15);
+      border-color: var(--green-light);
+      color: var(--green-light);
+      box-shadow: 0 2px 12px rgba(76,175,80,0.2);
+    }
+
+    .skill-card-icon {
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    /* Village dropdown */
+    .input-field option { background: var(--bg-secondary); color: var(--text-primary); }
+
+    /* Worker dashboard professional */
+    .w-dash-hero {
+      background: linear-gradient(135deg, #0d2a1a 0%, #0b1a12 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 0;
+    }
+
+    .w-dash-banner {
+      background: linear-gradient(135deg, rgba(46,125,50,0.12) 0%, rgba(76,175,80,0.05) 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .w-dash-banner::before {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(76,175,80,0.08) 0%, transparent 70%);
+      top: -100px;
+      right: -100px;
+      pointer-events: none;
+    }
+
+    .w-profile-pill {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .w-avatar-ring {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2e7d32, #4caf50);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      box-shadow: 0 0 0 3px rgba(76,175,80,0.3), 0 4px 16px rgba(46,125,50,0.4);
+      flex-shrink: 0;
+    }
+
+    .w-profile-info-name {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 3px;
+    }
+
+    .w-profile-info-sub {
+      font-size: 11px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .w-skill-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(76,175,80,0.15);
+      border: 1px solid rgba(76,175,80,0.3);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--green-light);
+      margin-top: 4px;
+    }
+
+    .w-district-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue);
+      margin-top: 4px;
+    }
+
+    /* Job Cards for worker dashboard */
+    .w-job-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 10px;
+      transition: all 0.2s;
+      border-left: 3px solid var(--green-light);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .w-job-card:hover {
+      border-color: var(--green-light);
+      background: var(--bg-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .w-job-card.urgent-card {
+      border-left-color: var(--red);
+    }
+
+    .w-job-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .w-job-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      background: rgba(76,175,80,0.12);
+      flex-shrink: 0;
+    }
+
+    .w-job-title { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+    .w-job-meta { font-size: 12px; color: var(--text-secondary); }
+    .w-job-wage { font-size: 16px; font-weight: 800; color: var(--green-light); }
+
+    .w-job-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .w-apply-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #2e7d32, #4caf50);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      margin-top: 10px;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .w-apply-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(46,125,50,0.4); }
+    .w-apply-btn:active { transform: translateY(0); }
+    .w-apply-btn.applied {
+      background: var(--green-glow);
+      color: var(--green-light);
+      border: 1px solid rgba(76,175,80,0.3);
+      cursor: default;
+    }
+    .w-apply-btn.applied:hover { transform: none; box-shadow: none; }
+
+    /* Stats bar in worker dash */
+    .w-stats-bar {
+      display: flex;
+      gap: 1px;
+      background: var(--border);
+      overflow: hidden;
+    }
+
+    .w-stat-item {
+      flex: 1;
+      background: var(--bg-card);
+      padding: 14px 12px;
+      text-align: center;
+    }
+
+    .w-stat-num { font-size: 22px; font-weight: 800; color: var(--green-light); }
+    .w-stat-label { font-size: 10px; color: var(--text-muted); margin-top: 2px; font-weight: 600; }
+
+    /* Session badge on login */
+    .auto-login-banner {
+      background: rgba(76,175,80,0.1);
+      border: 1px solid rgba(76,175,80,0.25);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .auto-login-banner:hover { background: rgba(76,175,80,0.18); }
 
     .login-badge {
       display: inline-flex;
@@ -1707,6 +1995,11 @@
 </head>
 
 <body>
+  <!-- Global Loader -->
+  <div id="globalLoader">
+    <div class="spinner"></div>
+    <div id="loaderText" style="font-family: 'Inter', sans-serif; font-weight: 500;">Loading data...</div>
+  </div>
 
   <!-- ==================== LOGIN SCREEN ==================== -->
   <div id="loginScreen">
@@ -1785,7 +2078,17 @@
       <div class="login-panel" id="panelWorker">
         <div class="login-badge worker-badge">👷 मज़दूर पोर्टल · Worker Access</div>
         <div class="login-title">Worker Login</div>
-        <div class="login-sub">अपने काम और आवेदन देखें</div>
+        <div class="login-sub">अपना जिला, गाँव और काम चुनें — आपके लिए खास नौकरियाँ दिखेंगी</div>
+
+        <!-- Saved session quick-login banner -->
+        <div class="auto-login-banner" id="savedSessionBanner" style="display:none;" onclick="autoLoginWorker()">
+          <div style="width:36px;height:36px;background:linear-gradient(135deg,#2e7d32,#4caf50);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0;" id="savedAvatar">?</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;" id="savedName">—</div>
+            <div style="font-size:11px;color:var(--text-secondary);" id="savedMeta">—</div>
+          </div>
+          <div style="font-size:12px;color:var(--green-light);font-weight:600;">↩ Quick Login</div>
+        </div>
 
         <div class="input-group">
           <label class="input-label">MOBILE NUMBER / मोबाइल नंबर</label>
@@ -1804,11 +2107,137 @@
         </div>
 
         <div class="input-group">
+          <label class="input-label">जिला / DISTRICT</label>
+          <div class="input-wrap">
+            <span class="input-icon">🗺️</span>
+            <select id="workerDistrict" class="input-field" style="padding-left:42px;" onchange="updateVillageDropdown()">
+              <option value="">-- जिला चुनें / Select District --</option>
+              <optgroup label="पश्चिमी UP / Western UP">
+              <option value="Agra">Agra — आगरा</option>
+              <option value="Aligarh">Aligarh — अलीगढ़</option>
+              <option value="Amroha">Amroha — अमरोहा</option>
+              <option value="Baghpat">Baghpat — बागपत</option>
+              <option value="Bijnor">Bijnor — बिजनौर</option>
+              <option value="Bulandshahr">Bulandshahr — बुलंदशहर</option>
+              <option value="Etah">Etah — एटा</option>
+              <option value="Etawah">Etawah — इटावा</option>
+              <option value="Firozabad">Firozabad — फिरोज़ाबाद</option>
+              <option value="Gautam Buddha Nagar">Gautam Buddha Nagar — गौतमबुद्ध नगर</option>
+              <option value="Ghaziabad">Ghaziabad — गाज़ियाबाद</option>
+              <option value="Hathras">Hathras — हाथरस</option>
+              <option value="Kasganj">Kasganj — कासगंज</option>
+              <option value="Mathura">Mathura — मथुरा</option>
+              <option value="Meerut">Meerut — मेरठ</option>
+              <option value="Moradabad">Moradabad — मुरादाबाद</option>
+              <option value="Muzaffarnagar">Muzaffarnagar — मुज़फ्फरनगर</option>
+              <option value="Rampur">Rampur — रामपुर</option>
+              <option value="Sambhal">Sambhal — संभल</option>
+              <option value="Saharanpur">Saharanpur — सहारनपुर</option>
+              <option value="Shamli">Shamli — शामली</option>
+              </optgroup>
+              <optgroup label="मध्य UP / Central UP">
+              <option value="Auraiya">Auraiya — औरैया</option>
+              <option value="Barabanki">Barabanki — बाराबंकी</option>
+              <option value="Farrukhabad">Farrukhabad — फर्रुखाबाद</option>
+              <option value="Fatehpur">Fatehpur — फतेहपुर</option>
+              <option value="Hardoi">Hardoi — हरदोई</option>
+              <option value="Kannauj">Kannauj — कन्नौज</option>
+              <option value="Kanpur Dehat">Kanpur Dehat — कानपुर देहात</option>
+              <option value="Kanpur Nagar">Kanpur Nagar — कानपुर नगर</option>
+              <option value="Lucknow">Lucknow — लखनऊ</option>
+              <option value="Mainpuri">Mainpuri — मैनपुरी</option>
+              <option value="Raebareli">Raebareli — रायबरेली</option>
+              <option value="Sitapur">Sitapur — सीतापुर</option>
+              <option value="Unnao">Unnao — उन्नाव</option>
+              </optgroup>
+              <optgroup label="पूर्वी UP / Eastern UP">
+              <option value="Ambedkar Nagar">Ambedkar Nagar — अंबेडकरनगर</option>
+              <option value="Amethi">Amethi — अमेठी</option>
+              <option value="Ayodhya">Ayodhya — अयोध्या</option>
+              <option value="Azamgarh">Azamgarh — आज़मगढ़</option>
+              <option value="Ballia">Ballia — बलिया</option>
+              <option value="Balrampur">Balrampur — बलरामपुर</option>
+              <option value="Basti">Basti — बस्ती</option>
+              <option value="Chandauli">Chandauli — चंदौली</option>
+              <option value="Deoria">Deoria — देवरिया</option>
+              <option value="Ghazipur">Ghazipur — ग़ाज़ीपुर</option>
+              <option value="Gorakhpur">Gorakhpur — गोरखपुर</option>
+              <option value="Jaunpur">Jaunpur — जौनपुर</option>
+              <option value="Kushinagar">Kushinagar — कुशीनगर</option>
+              <option value="Maharajganj">Maharajganj — महाराजगंज</option>
+              <option value="Mau">Mau — मऊ</option>
+              <option value="Mirzapur">Mirzapur — मिर्ज़ापुर</option>
+              <option value="Sant Kabir Nagar">Sant Kabir Nagar — संत कबीर नगर</option>
+              <option value="Sant Ravidas Nagar">Sant Ravidas Nagar — संत रविदास नगर</option>
+              <option value="Siddharth Nagar">Siddharth Nagar — सिद्धार्थनगर</option>
+              <option value="Sonbhadra">Sonbhadra — सोनभद्र</option>
+              <option value="Sultanpur">Sultanpur — सुल्तानपुर</option>
+              <option value="Varanasi">Varanasi — वाराणसी</option>
+              </optgroup>
+              <optgroup label="बुंदेलखंड / Bundelkhand">
+              <option value="Banda">Banda — बाँदा</option>
+              <option value="Chitrakoot">Chitrakoot — चित्रकूट</option>
+              <option value="Hamirpur">Hamirpur — हमीरपुर</option>
+              <option value="Jalaun">Jalaun — जालौन</option>
+              <option value="Jhansi">Jhansi — झाँसी</option>
+              <option value="Lalitpur">Lalitpur — ललितपुर</option>
+              <option value="Mahoba">Mahoba — महोबा</option>
+              </optgroup>
+              <optgroup label="तराई / Tarai">
+              <option value="Bahraich">Bahraich — बहराइच</option>
+              <option value="Gonda">Gonda — गोंडा</option>
+              <option value="Lakhimpur Kheri">Lakhimpur Kheri — लखीमपुर खीरी</option>
+              <option value="Pilibhit">Pilibhit — पीलीभीत</option>
+              <option value="Shravasti">Shravasti — श्रावस्ती</option>
+              </optgroup>
+              <optgroup label="मध्य-पूर्व UP">
+              <option value="Prayagraj">Prayagraj — प्रयागराज</option>
+              <option value="Kaushambi">Kaushambi — कौशांबी</option>
+              <option value="Pratapgarh">Pratapgarh — प्रतापगढ़</option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-group">
           <label class="input-label">गाँव / VILLAGE</label>
           <div class="input-wrap">
             <span class="input-icon">🏘️</span>
-            <input id="workerVillage" class="input-field" type="text" placeholder="अपना गाँव डालें" autocomplete="off" />
+            <select id="workerVillage" class="input-field" style="padding-left:42px;">
+              <option value="">-- पहले जिला चुनें --</option>
+            </select>
           </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">काम / SKILL — आप कौन-सा काम करते हैं?</label>
+          <div class="skill-grid" id="skillGrid">
+            <div class="skill-card" onclick="selectSkill(this,'🌾 खेती')" data-skill="🌾 खेती">
+              <div class="skill-card-icon">🌾</div>खेती
+            </div>
+            <div class="skill-card" onclick="selectSkill(this,'🏗️ निर्माण')" data-skill="🏗️ निर्माण">
+              <div class="skill-card-icon">🏗️</div>निर्माण
+            </div>
+            <div class="skill-card" onclick="selectSkill(this,'🚛 ड्राइविंग')" data-skill="🚛 ड्राइविंग">
+              <div class="skill-card-icon">🚛</div>ड्राइविंग
+            </div>
+            <div class="skill-card" onclick="selectSkill(this,'⚡ बिजली')" data-skill="⚡ बिजली">
+              <div class="skill-card-icon">⚡</div>बिजली
+            </div>
+            <div class="skill-card" onclick="selectSkill(this,'🪣 प्लंबर')" data-skill="🪣 प्लंबर">
+              <div class="skill-card-icon">🪣</div>प्लंबर
+            </div>
+            <div class="skill-card" onclick="selectSkill(this,'🍳 रसोई')" data-skill="🍳 रसोई">
+              <div class="skill-card-icon">🍳</div>रसोई
+            </div>
+            <div class="skill-card" onclick="selectSkill(this,'🧱 राजमिस्त्री')" data-skill="🧱 राजमिस्त्री">
+              <div class="skill-card-icon">🧱</div>राजमिस्त्री
+            </div>
+            <div class="skill-card" onclick="selectSkill(this,'🌿 माली')" data-skill="🌿 माली">
+              <div class="skill-card-icon">🌿</div>माली
+            </div>
+          </div>
+          <input type="hidden" id="workerSkillSelected" />
         </div>
 
         <button class="login-btn worker-btn" onclick="doWorkerLogin()">
@@ -1816,56 +2245,73 @@
         </button>
 
         <div class="login-error" id="workerLoginError">
-          ❌ कृपया नाम, मोबाइल और गाँव भरें।
+          ❌ कृपया सभी जानकारी भरें और काम चुनें।
         </div>
 
         <div class="login-hint">
-          नया मज़दूर है? <span>सीधे अपना नाम + नंबर से login करें</span>
+          नया मज़दूर है? <span>सीधे अपनी जानकारी भरकर login करें — OTP की ज़रूरत नहीं</span>
         </div>
       </div>
     </div>
   </div>
 
   <!-- ==================== WORKER DASHBOARD ==================== -->
-  <div id="workerDashboard">
-    <div class="worker-dash-header">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <div style="width:38px; height:38px; background:linear-gradient(135deg,#2e7d32,#4caf50); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px;">🌱</div>
-        <div>
-          <div style="font-weight:800; font-size:16px;">KaamSetu</div>
-          <div style="font-size:9px; color:var(--green-light); letter-spacing:1.5px;">WORKER PORTAL</div>
+  <div id="workerDashboard" style="display:none;">
+    <!-- Header -->
+    <div class="w-dash-hero">
+      <div class="w-dash-banner">
+        <div class="w-profile-pill">
+          <div class="w-avatar-ring" id="wDashAvatar">R</div>
+          <div>
+            <div class="w-profile-info-name" id="wDashName">Worker Name</div>
+            <div class="w-profile-info-sub" id="wDashMeta">📱 — · 📍 —</div>
+            <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;">
+              <span class="w-skill-pill" id="wDashSkill">🌾 खेती</span>
+              <span class="w-district-pill" id="wDashDistrict">📍 जिला</span>
+            </div>
+          </div>
+        </div>
+        <button style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:#f87171;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;" onclick="doWorkerLogout()">🚪 Logout</button>
+      </div>
+
+      <!-- Quick stats -->
+      <div class="w-stats-bar">
+        <div class="w-stat-item">
+          <div class="w-stat-num" id="wStatJobs">0</div>
+          <div class="w-stat-label">JOBS FOUND</div>
+        </div>
+        <div class="w-stat-item">
+          <div class="w-stat-num" id="wStatApplied">0</div>
+          <div class="w-stat-label">APPLIED</div>
+        </div>
+        <div class="w-stat-item">
+          <div class="w-stat-num" id="wStatVillage">—</div>
+          <div class="w-stat-label">VILLAGE</div>
         </div>
       </div>
-      <button class="logout-btn" style="width:auto; padding:8px 16px;" onclick="doWorkerLogout()">🚪 Logout</button>
     </div>
 
-    <div class="worker-profile-card">
-      <div class="worker-avatar-lg" id="wDashAvatar">R</div>
-      <div style="flex:1;">
-        <div style="font-size:20px; font-weight:700; margin-bottom:4px;" id="wDashName">Worker Name</div>
-        <div style="font-size:13px; color:var(--text-secondary); margin-bottom:8px;" id="wDashMeta">📱 — · 🏘️ —</div>
-        <span class="badge green">✅ Registered Worker</span>
+    <!-- Job Listings -->
+    <div style="padding:20px 20px 100px;">
+      <div class="section-header" style="margin-bottom:14px;">
+        <div class="section-title">
+          <div class="section-title-dot"></div>
+          <span id="wJobsHeader">आपके लिए नौकरियाँ</span>
+        </div>
+        <span class="badge green" id="wJobCount">0 Jobs</span>
       </div>
-    </div>
 
-    <div style="margin: 0 24px 16px;">
-      <div class="section-header">
-        <div class="section-title"><div class="section-title-dot"></div> मेरे आवेदन / My Applications</div>
+      <div id="wMatchedJobsList"></div>
+
+      <!-- My Applications Section -->
+      <div class="section-header" style="margin: 24px 0 14px;">
+        <div class="section-title">
+          <div class="section-title-dot" style="background:var(--amber);"></div>
+          मेरे आवेदन / My Applications
+        </div>
       </div>
       <div id="workerApplicationsList" style="display:flex; flex-direction:column; gap:10px;">
-        <div style="text-align:center; padding:40px; color:var(--text-muted); font-size:13px;">⏳ आवेदन लोड हो रहे हैं...</div>
-      </div>
-    </div>
-
-    <div style="margin: 0 24px 32px;">
-      <div class="section-header">
-        <div class="section-title"><div class="section-title-dot"></div> उपलब्ध काम / Available Jobs</div>
-      </div>
-      <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:20px; text-align:center;">
-        <div style="font-size:32px; margin-bottom:12px;">💼</div>
-        <div style="font-size:14px; font-weight:600; margin-bottom:6px;">KaamSetu Main App पर जाएं</div>
-        <div style="font-size:12px; color:var(--text-secondary); margin-bottom:16px;">नए काम ढूंढें और Apply करें</div>
-        <a href="jobs.html" style="display:inline-block; background:linear-gradient(135deg,#2e7d32,#4caf50); color:#fff; border-radius:8px; padding:10px 24px; font-weight:700; text-decoration:none; font-size:13px;">🔗 Jobs देखें →</a>
+        <div style="text-align:center; padding:32px; color:var(--text-muted); font-size:13px;">📋 अभी कोई आवेदन नहीं है</div>
       </div>
     </div>
   </div>
@@ -2625,66 +3071,348 @@
     </div>
   </div>
 
-  <!-- Toast -->
   <div class="toast" id="toast"></div>
 
   <!-- ==================== JAVASCRIPT ==================== -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
   <script>
+    // ============================================================
+    // FIREBASE CONFIGURATION (Production Ready)
+    // Replace these values with your Firebase project settings to switch 
+    // from LocalStorage to a real cloud database.
+    // ============================================================
+    const APP_CONFIG = window.KAAMSETU_CONFIG || {
+      firebaseApiKey: "REPLACE_FIREBASE_API_KEY",
+      firebaseAuthDomain: "REPLACE_FIREBASE_AUTH_DOMAIN",
+      firebaseProjectId: "REPLACE_FIREBASE_PROJECT_ID",
+      firebaseStorageBucket: "REPLACE_FIREBASE_STORAGE_BUCKET",
+      firebaseMessagingSenderId: "REPLACE_FIREBASE_MESSAGING_SENDER_ID",
+      firebaseAppId: "REPLACE_FIREBASE_APP_ID"
+    };
+
+    const HAS_REAL_BACKEND = !Object.values(APP_CONFIG).some((v) => String(v).startsWith("REPLACE_"));
+    let db = null;
+    if (HAS_REAL_BACKEND) {
+      try {
+        firebase.initializeApp({
+          apiKey: APP_CONFIG.firebaseApiKey,
+          authDomain: APP_CONFIG.firebaseAuthDomain,
+          projectId: APP_CONFIG.firebaseProjectId,
+          storageBucket: APP_CONFIG.firebaseStorageBucket,
+          messagingSenderId: APP_CONFIG.firebaseMessagingSenderId,
+          appId: APP_CONFIG.firebaseAppId
+        });
+        db = firebase.firestore();
+        console.log("Firebase Connected!");
+      } catch (e) {
+        console.error("Firebase init failed:", e);
+      }
+    }
+
     // ============================================================
     // DATA
     // ============================================================
     const ADMIN_CREDS = { user: 'admin', pass: 'kaamsetu123' };
 
-    const workers = [
-      { id: 1, name: 'रामलाल यादव', village: 'Ramnagar', skill: '🌾 खेती', phone: '9876543210', jobsDone: 23, status: 'working', currentJob: 'धान की कटाई', wage: '₹500/दिन', gender: 'M', mapX: 28, mapY: 42, age: 34 },
-      { id: 2, name: 'सुरेश मौर्य', village: 'Shekhpur', skill: '🏗️ निर्माण', phone: '9876543211', jobsDone: 19, status: 'working', currentJob: 'मकान निर्माण', wage: '₹450/दिन', gender: 'M', mapX: 62, mapY: 68, age: 28 },
-      { id: 3, name: 'मुन्नी देवी', village: 'Hasnabad', skill: '🌾 खेती', phone: '9876543212', jobsDone: 17, status: 'idle', currentJob: null, wage: '₹400/दिन', gender: 'F', mapX: 72, mapY: 22, age: 40 },
-      { id: 4, name: 'राजकुमार पटेल', village: 'Nawabganj', skill: '🚛 ड्राइविंग', phone: '9876543213', jobsDone: 14, status: 'available', currentJob: null, wage: '₹600/दिन', gender: 'M', mapX: 15, mapY: 65, age: 32 },
-      { id: 5, name: 'गीता बाई', village: 'Ramnagar', skill: '🌾 खेती', phone: '9876543214', jobsDone: 12, status: 'working', currentJob: 'धान की कटाई', wage: '₹400/दिन', gender: 'F', mapX: 38, mapY: 35, age: 45 },
-      { id: 6, name: 'मोहन लाल', village: 'Shekhpur', skill: '⚡ बिजली', phone: '9876543215', jobsDone: 10, status: 'available', currentJob: null, wage: '₹550/दिन', gender: 'M', mapX: 55, mapY: 55, age: 38 },
-      { id: 7, name: 'दुर्गा प्रसाद', village: 'Hasnabad', skill: '🏗️ निर्माण', phone: '9876543216', jobsDone: 8, status: 'idle', currentJob: null, wage: '₹450/दिन', gender: 'M', mapX: 80, mapY: 48, age: 26 },
-      { id: 8, name: 'कमला देवी', village: 'Nawabganj', skill: '🌾 खेती', phone: '9876543217', jobsDone: 15, status: 'working', currentJob: 'गेहूँ बुआई', wage: '₹380/दिन', gender: 'F', mapX: 45, mapY: 72, age: 42 },
-      { id: 9, name: 'रमेश कुमार', village: 'Ramnagar', skill: '🪣 प्लंबर', phone: '9876543218', jobsDone: 6, status: 'available', currentJob: null, wage: '₹500/दिन', gender: 'M', mapX: 20, mapY: 28, age: 30 },
-      { id: 10, name: 'शांति देवी', village: 'Hasnabad', skill: '🌾 खेती', phone: '9876543219', jobsDone: 20, status: 'working', currentJob: 'धान की कटाई', wage: '₹400/दिन', gender: 'F', mapX: 68, mapY: 32, age: 50 },
-      { id: 11, name: 'बृजेश यादव', village: 'Shekhpur', skill: '🚛 ड्राइविंग', phone: '9876543220', jobsDone: 11, status: 'idle', currentJob: null, wage: '₹600/दिन', gender: 'M', mapX: 42, mapY: 58, age: 35 },
-      { id: 12, name: 'पूजा गुप्ता', village: 'Nawabganj', skill: '🍳 रसोई', phone: '9876543221', jobsDone: 9, status: 'available', currentJob: null, wage: '₹350/दिन', gender: 'F', mapX: 85, mapY: 75, age: 27 },
+    // ============================================================
+    // REAL UP WORKERS DATA — Real names, real UP villages, real skills
+    // ============================================================
+    // GLOBAL LOADER CONTROLS
+    // ============================================================
+    function showLoader(text = 'Loading data...') {
+      const loader = document.getElementById('globalLoader');
+      if(loader) {
+        document.getElementById('loaderText').textContent = text;
+        loader.style.display = 'flex';
+      }
+    }
+    function hideLoader() {
+      const loader = document.getElementById('globalLoader');
+      if(loader) loader.style.display = 'none';
+    }
+
+    // ============================================================
+    // DEFAULT DATA (Fallback & Seeding)
+    // ============================================================
+    // DEFAULT DATA (Fallback & Seeding)
+    // ============================================================
+    const DEFAULT_WORKERS = [
+      { id: 1,  name: 'रामलाल यादव',       village: 'Malihabad',      district: 'Lucknow',     skill: '🌾 खेती',      phone: '9839201045', jobsDone: 23, status: 'working',   currentJob: 'आम बाग की देखभाल',    wage: '₹450/दिन', gender: 'M', mapX: 28, mapY: 42, age: 34 },
+      { id: 2,  name: 'सुरेश मौर्य',       village: 'Sahjanwa',       district: 'Gorakhpur',   skill: '🏗️ निर्माण',   phone: '9415234567', jobsDone: 19, status: 'working',   currentJob: 'पंचायत भवन निर्माण',  wage: '₹480/दिन', gender: 'M', mapX: 62, mapY: 68, age: 28 },
+      { id: 3,  name: 'मुन्नी देवी',        village: 'Phulpur',        district: 'Prayagraj',   skill: '🌾 खेती',      phone: '9455678901', jobsDone: 17, status: 'idle',      currentJob: null,                   wage: '₹380/दिन', gender: 'F', mapX: 72, mapY: 22, age: 40 },
+      { id: 4,  name: 'राजकुमार पटेल',     village: 'Fatehabad',      district: 'Agra',        skill: '🚛 ड्राइविंग', phone: '9897456123', jobsDone: 14, status: 'available', currentJob: null,                   wage: '₹620/दिन', gender: 'M', mapX: 15, mapY: 65, age: 32 },
+      { id: 5,  name: 'गीता देवी',         village: 'Sarnath',        district: 'Varanasi',    skill: '🌾 खेती',      phone: '9451234789', jobsDone: 12, status: 'working',   currentJob: 'सब्जी की खेती',       wage: '₹400/दिन', gender: 'F', mapX: 38, mapY: 35, age: 45 },
+      { id: 6,  name: 'मोहन लाल',          village: 'Ghatampur',      district: 'Kanpur Nagar',skill: '⚡ बिजली',     phone: '9918765432', jobsDone: 10, status: 'available', currentJob: null,                   wage: '₹580/दिन', gender: 'M', mapX: 55, mapY: 55, age: 38 },
+      { id: 7,  name: 'दुर्गा प्रसाद',      village: 'Chauri Chaura',  district: 'Gorakhpur',   skill: '🏗️ निर्माण',   phone: '9721345678', jobsDone: 8,  status: 'idle',      currentJob: null,                   wage: '₹450/दिन', gender: 'M', mapX: 80, mapY: 48, age: 26 },
+      { id: 8,  name: 'कमला देवी',         village: 'Salon',          district: 'Raebareli',   skill: '🌾 खेती',      phone: '9415789234', jobsDone: 15, status: 'working',   currentJob: 'गेहूँ की कटाई',       wage: '₹400/दिन', gender: 'F', mapX: 45, mapY: 72, age: 42 },
+      { id: 9,  name: 'रमेश कुमार',        village: 'Haidergarh',     district: 'Barabanki',   skill: '🪣 प्लंबर',    phone: '9839567890', jobsDone: 6,  status: 'available', currentJob: null,                   wage: '₹520/दिन', gender: 'M', mapX: 20, mapY: 28, age: 30 },
+      { id: 10, name: 'शांति देवी',        village: 'Arajiline',      district: 'Varanasi',    skill: '🌾 खेती',      phone: '9453456789', jobsDone: 20, status: 'working',   currentJob: 'धान रोपाई',           wage: '₹400/दिन', gender: 'F', mapX: 68, mapY: 32, age: 50 },
+      { id: 11, name: 'बृजेश यादव',        village: 'Vrindavan',      district: 'Mathura',     skill: '🚛 ड्राइविंग', phone: '9897234567', jobsDone: 11, status: 'idle',      currentJob: null,                   wage: '₹600/दिन', gender: 'M', mapX: 42, mapY: 58, age: 35 },
+      { id: 12, name: 'पूजा गुप्ता',       village: 'Gosainganj',     district: 'Lucknow',     skill: '🍳 रसोई',     phone: '9839876543', jobsDone: 9,  status: 'available', currentJob: null,                   wage: '₹360/दिन', gender: 'F', mapX: 85, mapY: 75, age: 27 },
     ];
 
-    const jobs = [
-      { id: 1, title: 'धान की कटाई', titleEn: 'Paddy Harvesting', category: '🌾 खेती', wage: '₹500/दिन', location: 'Ramnagar', workers: 5, filled: 3, status: 'active', urgent: true, desc: '5 मज़दूर चाहिए, 10 दिन का काम' },
-      { id: 2, title: 'मकान निर्माण', titleEn: 'House Construction', category: '🏗️ निर्माण', wage: '₹450/दिन', location: 'Shekhpur', workers: 8, filled: 8, status: 'completed', urgent: false, desc: 'पूरा हो गया' },
-      { id: 3, title: 'ट्रैक्टर ड्राइवर', titleEn: 'Tractor Driver', category: '🚛 ड्राइविंग', wage: '₹600/दिन', location: 'Hasnabad', workers: 2, filled: 0, status: 'vacant', urgent: true, desc: 'तुरंत ज़रूरत है' },
-      { id: 4, title: 'गेहूँ बुआई', titleEn: 'Wheat Sowing', category: '🌾 खेती', wage: '₹400/दिन', location: 'Nawabganj', workers: 6, filled: 2, status: 'active', urgent: false, desc: '4 और मज़दूर चाहिए' },
-      { id: 5, title: 'बिजली मरम्मत', titleEn: 'Electrical Work', category: '⚡ बिजली', wage: '₹550/दिन', location: 'Ramnagar', workers: 3, filled: 0, status: 'vacant', urgent: false, desc: 'इलेक्ट्रीशियन चाहिए' },
-      { id: 6, title: 'प्लंबिंग काम', titleEn: 'Plumbing Work', category: '🪣 प्लंबर', wage: '₹500/दिन', location: 'Shekhpur', workers: 2, filled: 0, status: 'vacant', urgent: false, desc: 'पाइप लाइन मरम्मत' },
-      { id: 7, title: 'सड़क निर्माण', titleEn: 'Road Construction', category: '🏗️ निर्माण', wage: '₹480/दिन', location: 'Hasnabad', workers: 10, filled: 7, status: 'active', urgent: false, desc: '3 और मज़दूर चाहिए' },
-      { id: 8, title: 'रसोई सहायक', titleEn: 'Kitchen Helper', category: '🍳 रसोई', wage: '₹350/दिन', location: 'Nawabganj', workers: 2, filled: 2, status: 'completed', urgent: false, desc: 'पूरा हुआ' },
+    const DEFAULT_JOBS = [
+      { id: 1,  title: 'धान रोपाई (Paddy Transplanting)',  titleEn: 'Paddy Transplanting',  category: '🌾 खेती', wage: '₹450/दिन', location: 'Malihabad, Lucknow',          district: 'Lucknow',      workers: 8,  filled: 5, status: 'active',    urgent: true,  desc: 'खरीफ सीजन — जून-जुलाई, 8 मज़दूर चाहिए। खाना-पानी मिलेगा। किसान: रामनरेश सिंह — 9839201044' },
+      { id: 2,  title: 'गेहूँ की कटाई (Wheat Harvesting)', titleEn: 'Wheat Harvesting',     category: '🌾 खेती', wage: '₹500/दिन', location: 'Phulpur, Prayagraj',           district: 'Prayagraj',    workers: 10, filled: 4, status: 'active',    urgent: true,  desc: 'रबी सीजन — 10 दिन का काम। दोपहर का खाना मिलेगा। किसान: महेंद्र पटेल — 9455678902' },
+      { id: 3,  title: 'आम बाग सफाई (Mango Orchard)',      titleEn: 'Mango Orchard Work',   category: '🌾 खेती', wage: '₹400/दिन', location: 'Malihabad, Lucknow',          district: 'Lucknow',      workers: 5,  filled: 0, status: 'vacant',    urgent: false, desc: 'मलिहाबाद का दशहरी आम बाग — झाड़ू, कटाई, बॉक्सिंग का काम। टीका भाई — 9839201046' },
+      { id: 4,  title: 'सब्जी खेती सहायक (Vegetable Farm)', titleEn: 'Vegetable Farming',   category: '🌾 खेती', wage: '₹380/दिन', location: 'Sarnath, Varanasi',           district: 'Varanasi',     workers: 4,  filled: 2, status: 'active',    urgent: false, desc: 'टमाटर, मिर्च, भिंडी की खेती। आधा दिन काम, खाना साथ। किसान: गंगाधर — 9451234788' },
+      { id: 5,  title: 'ईख कटाई (Sugarcane Harvesting)',   titleEn: 'Sugarcane Cutting',    category: '🌾 खेती', wage: '₹550/दिन', location: 'Sidhauli, Sitapur',           district: 'Sitapur',      workers: 15, filled: 8, status: 'active',    urgent: false, desc: 'शक्कर कारखाना सप्लाई — नवंबर से मार्च। टोन पर पेमेंट। संपर्क: मिल सुपरवाइजर — 9838712345' },
+      { id: 6,  title: 'आलू बुआई (Potato Sowing)',         titleEn: 'Potato Sowing',        category: '🌾 खेती', wage: '₹420/दिन', location: 'Govardhan, Mathura',          district: 'Mathura',      workers: 6,  filled: 0, status: 'vacant',    urgent: true,  desc: 'अक्टूबर — आलू की बुआई। खाना साथ मिलेगा। किसान: बृजमोहन लाल — 9897234568' },
+      { id: 7,  title: 'प्रधानमंत्री आवास योजना मज़दूर',   titleEn: 'PM Awas Yojana Work', category: '🏗️ निर्माण', wage: '₹500/दिन', location: 'Sahjanwa, Gorakhpur',        district: 'Gorakhpur',    workers: 12, filled: 7, status: 'active',    urgent: false, desc: 'PMAY ग्रामीण — सरकारी घर बनाने का काम। ठेकेदार: शिवप्रसाद — 9721345679' },
+      { id: 8,  title: 'पंचायत भवन निर्माण',               titleEn: 'Panchayat Bhawan',    category: '🏗️ निर्माण', wage: '₹480/दिन', location: 'Salon, Raebareli',           district: 'Raebareli',    workers: 8,  filled: 3, status: 'active',    urgent: false, desc: 'ग्राम पंचायत का नया भवन — राज मिस्त्री और मज़दूर दोनों चाहिए। ग्राम प्रधान — 9415789235' },
+      { id: 9,  title: 'सड़क निर्माण (PMGSY)',             titleEn: 'Road Construction',    category: '🏗️ निर्माण', wage: '₹470/दिन', location: 'Haidergarh, Barabanki',      district: 'Barabanki',    workers: 20, filled: 12,status: 'active',    urgent: false, desc: 'प्रधानमंत्री ग्राम सड़क योजना — पक्की सड़क निर्माण। JCB ऑपरेटर भी चाहिए। 9839567891' },
+      { id: 10, title: 'नाला निर्माण कार्य',               titleEn: 'Drain Construction',  category: '🏗️ निर्माण', wage: '₹450/दिन', location: 'Ghatampur, Kanpur Dehat',    district: 'Kanpur Dehat', workers: 10, filled: 0, status: 'vacant',    urgent: true,  desc: 'ग्राम पंचायत नाला — 500 मीटर। 10 दिन काम। ठेकेदार: श्याम बाबू — 9918765433' },
+      { id: 11, title: 'ट्रैक्टर ड्राइवर (खेत)',           titleEn: 'Tractor Driver',       category: '🚛 ड्राइविंग', wage: '₹650/दिन', location: 'Fatehabad, Agra',          district: 'Agra',         workers: 2,  filled: 0, status: 'vacant',    urgent: true,  desc: 'खेत जुताई के लिए ट्रैक्टर ड्राइवर — लाइसेंस ज़रूरी। 7 दिन काम। किसान: रतन सिंह — 9897456124' },
+      { id: 12, title: 'ई-रिक्शा ड्राइवर',                titleEn: 'E-Rickshaw Driver',    category: '🚛 ड्राइविंग', wage: '₹500/दिन', location: 'Vrindavan, Mathura',       district: 'Mathura',      workers: 3,  filled: 1, status: 'active',    urgent: false, desc: 'व्रिंदावन मंदिर रूट — सुबह 6 से शाम 8। ड्राइविंग लाइसेंस + आधार। 9897234569' },
+      { id: 13, title: 'बस ड्राइवर सहायक (कंडक्टर)',      titleEn: 'Bus Conductor',        category: '🚛 ड्राइविंग', wage: '₹420/दिन', location: 'Gorakhpur Bus Stand',      district: 'Gorakhpur',    workers: 4,  filled: 2, status: 'active',    urgent: false, desc: 'UP State Road Transport — कंडक्टर। 10वीं पास। शहर रूट। UPSRTC भर्ती — 9721345680' },
+      { id: 14, title: 'बिजली मीटर फिटिंग (PVVNL)',        titleEn: 'Meter Fitting',        category: '⚡ बिजली', wage: '₹600/दिन', location: 'Lucknow — सभी ब्लॉक',       district: 'Lucknow',      workers: 6,  filled: 3, status: 'active',    urgent: false, desc: 'PVVNL ठेकेदार — नए कनेक्शन मीटर लगाना। ITI (Electrician) ज़रूरी। 9839876544' },
+      { id: 15, title: 'सोलर पैनल इंस्टॉलेशन',            titleEn: 'Solar Panel Install',  category: '⚡ बिजली', wage: '₹650/दिन', location: 'Sarnath, Varanasi',          district: 'Varanasi',     workers: 4,  filled: 0, status: 'vacant',    urgent: false, desc: 'PM कुसुम योजना — किसान सोलर पंप। 10 KW पैनल। Training दी जाएगी। 9451234790' },
+      { id: 16, title: 'ट्रांसफॉर्मर मरम्मत सहायक',       titleEn: 'Transformer Repair',   category: '⚡ बिजली', wage: '₹580/दिन', location: 'Ghatampur, Kanpur Nagar',    district: 'Kanpur Nagar', workers: 2,  filled: 0, status: 'vacant',    urgent: true,  desc: '11KV ट्रांसफॉर्मर — KESCO ठेका। ITI Wireman चाहिए। 9918765434' },
+      { id: 17, title: 'जल जीवन मिशन — पाइप लाइन',        titleEn: 'Jal Jeevan Mission',   category: '🪣 प्लंबर', wage: '₹550/दिन', location: 'Haidergarh, Barabanki',     district: 'Barabanki',    workers: 8,  filled: 4, status: 'active',    urgent: false, desc: 'हर घर नल — ग्रामीण पाइप लाइन। PHED ठेका। ITI (Plumber) या अनुभव। 9839567892' },
+      { id: 18, title: 'शौचालय निर्माण (स्वच्छ भारत)',    titleEn: 'Toilet Construction',  category: '🪣 प्लंबर', wage: '₹480/दिन', location: 'Salon, Raebareli',           district: 'Raebareli',    workers: 5,  filled: 2, status: 'active',    urgent: false, desc: 'स्वच्छ भारत मिशन — ग्रामीण शौचालय। Masonry + Plumbing दोनों। 9415789236' },
+      { id: 19, title: 'मिड-डे मील रसोइया (MDM)',          titleEn: 'Mid Day Meal Cook',    category: '🍳 रसोई', wage: '₹350/दिन', location: 'Gosainganj, Lucknow',        district: 'Lucknow',      workers: 2,  filled: 1, status: 'active',    urgent: false, desc: 'प्राथमिक विद्यालय — सोमवार से शनिवार। 10 बजे से 2 बजे। रसोई भत्ता अलग। 9839876545' },
+      { id: 20, title: 'धाम/भंडारे में रसोई सहायक',       titleEn: 'Event Kitchen Helper', category: '🍳 रसोई', wage: '₹400/दिन', location: 'Vrindavan, Mathura',         district: 'Mathura',      workers: 8,  filled: 0, status: 'vacant',    urgent: true,  desc: 'श्री कृष्ण जन्माष्टमी भंडारा — 2 दिन काम, खाना-रहना साथ। श्री जी मंदिर ट्रस्ट — 9897234570' },
+      { id: 21, title: 'राज मिस्त्री — आवास निर्माण',     titleEn: 'Mason - House Build',  category: '🧱 राजमिस्त्री', wage: '₹600/दिन', location: 'Chauri Chaura, Gorakhpur', district: 'Gorakhpur',    workers: 3,  filled: 1, status: 'active',    urgent: false, desc: '3 कमरे का मकान — 30 दिन काम। टुकड़ी में काम। अनुभवी राज मिस्त्री। 9721345681' },
+      { id: 22, title: 'टाइल फिटिंग (Tile Work)',          titleEn: 'Tile Fitting',         category: '🧱 राजमिस्त्री', wage: '₹650/दिन', location: 'Arajiline, Varanasi',      district: 'Varanasi',     workers: 2,  filled: 0, status: 'vacant',    urgent: false, desc: 'नया घर टाइल — फर्श + दीवार। सामग्री मालिक देगा। 1500 sq ft। 9453456790' },
+      { id: 23, title: 'सरकारी उद्यान माली (Horticulture)', titleEn: 'Govt Garden Mali',    category: '🌿 माली', wage: '₹380/दिन', location: 'Lucknow — लाल बाग',          district: 'Lucknow',      workers: 4,  filled: 2, status: 'active',    urgent: false, desc: 'UP Horticulture Dept — लाल बाग लखनऊ। सुबह 7 से दोपहर 2। ड्रेस और औज़ार मिलेंगे। 0522-2239001' },
+      { id: 24, title: 'नर्सरी में पौधा तैयार करना',       titleEn: 'Nursery Work',         category: '🌿 माली', wage: '₹350/दिन', location: 'Govardhan, Mathura',         district: 'Mathura',      workers: 3,  filled: 0, status: 'vacant',    urgent: false, desc: 'फूल-पत्ती नर्सरी — गमले भरना, पानी देना, रिपोटिंग। पूरे साल काम। 9897234571' },
     ];
 
-    const applications = [
-      { id: 1, worker: 'रामलाल यादव', village: 'Ramnagar', job: 'धान की कटाई', jobDone: 23, date: '21 Jun', status: 'approved' },
-      { id: 2, worker: 'मुन्नी देवी', village: 'Hasnabad', job: 'गेहूँ बुआई', jobDone: 17, date: '21 Jun', status: 'pending' },
-      { id: 3, worker: 'राजकुमार पटेल', village: 'Nawabganj', job: 'ट्रैक्टर ड्राइवर', jobDone: 14, date: '20 Jun', status: 'pending' },
-      { id: 4, worker: 'गीता बाई', village: 'Ramnagar', job: 'धान की कटाई', jobDone: 12, date: '20 Jun', status: 'approved' },
-      { id: 5, worker: 'मोहन लाल', village: 'Shekhpur', job: 'बिजली मरम्मत', jobDone: 10, date: '19 Jun', status: 'working' },
-      { id: 6, worker: 'दुर्गा प्रसाद', village: 'Hasnabad', job: 'मकान निर्माण', jobDone: 8, date: '19 Jun', status: 'rejected' },
-      { id: 7, worker: 'कमला देवी', village: 'Nawabganj', job: 'गेहूँ बुआई', jobDone: 15, date: '18 Jun', status: 'working' },
-      { id: 8, worker: 'रमेश कुमार', village: 'Ramnagar', job: 'प्लंबिंग काम', jobDone: 6, date: '18 Jun', status: 'pending' },
-      { id: 9, worker: 'शांति देवी', village: 'Hasnabad', job: 'धान की कटाई', jobDone: 20, date: '17 Jun', status: 'approved' },
-      { id: 10, worker: 'बृजेश यादव', village: 'Shekhpur', job: 'ट्रैक्टर ड्राइवर', jobDone: 11, date: '17 Jun', status: 'pending' },
-      { id: 11, worker: 'पूजा गुप्ता', village: 'Nawabganj', job: 'रसोई सहायक', jobDone: 9, date: '16 Jun', status: 'approved' },
-      { id: 12, worker: 'सुरेश मौर्य', village: 'Shekhpur', job: 'सड़क निर्माण', jobDone: 19, date: '16 Jun', status: 'working' },
+    const DEFAULT_APPLICATIONS = [
+      { id: 1, worker: 'रामलाल यादव', village: 'Ramnagar', district: 'Lucknow', job: 'धान की कटाई', jobDone: 23, date: '21 Jun', status: 'approved' },
+      { id: 2, worker: 'मुन्नी देवी', village: 'Hasnabad', district: 'Prayagraj', job: 'गेहूँ बुआई', jobDone: 17, date: '21 Jun', status: 'pending' },
+      { id: 3, worker: 'राजकुमार पटेल', village: 'Nawabganj', district: 'Agra', job: 'ट्रैक्टर ड्राइवर', jobDone: 14, date: '20 Jun', status: 'pending' },
+      { id: 4, worker: 'गीता बाई', village: 'Ramnagar', district: 'Varanasi', job: 'धान की कटाई', jobDone: 12, date: '20 Jun', status: 'approved' },
+      { id: 5, worker: 'मोहन लाल', village: 'Shekhpur', district: 'Kanpur Nagar', job: 'बिजली मरम्मत', jobDone: 10, date: '19 Jun', status: 'working' },
+      { id: 6, worker: 'दुर्गा प्रसाद', village: 'Hasnabad', district: 'Gorakhpur', job: 'मकान निर्माण', jobDone: 8, date: '19 Jun', status: 'rejected' },
+      { id: 7, worker: 'कमला देवी', village: 'Nawabganj', district: 'Raebareli', job: 'गेहूँ बुआई', jobDone: 15, date: '18 Jun', status: 'working' },
+      { id: 8, worker: 'रमेश कुमार', village: 'Ramnagar', district: 'Barabanki', job: 'प्लंबिंग काम', jobDone: 6, date: '18 Jun', status: 'pending' },
+      { id: 9, worker: 'शांति देवी', village: 'Hasnabad', district: 'Varanasi', job: 'धान की कटाई', jobDone: 20, date: '17 Jun', status: 'approved' },
+      { id: 10, worker: 'बृजेश यादव', village: 'Shekhpur', district: 'Mathura', job: 'ट्रैक्टर ड्राइवर', jobDone: 11, date: '17 Jun', status: 'pending' },
+      { id: 11, worker: 'पूजा गुप्ता', village: 'Nawabganj', district: 'Lucknow', job: 'रसोई सहायक', jobDone: 9, date: '16 Jun', status: 'approved' },
+      { id: 12, worker: 'सुरेश मौर्य', village: 'Shekhpur', district: 'Gorakhpur', job: 'सड़क निर्माण', jobDone: 19, date: '16 Jun', status: 'working' },
     ];
+
+    // ============================================================
+    // UNIFIED LOCALSTORAGE DATABASE LAYER
+    // ============================================================
+    function mapCategoryToEnglish(cat) {
+      if (cat.includes('खेती') || cat.includes('Agri')) return 'Agriculture';
+      if (cat.includes('निर्माण') || cat.includes('Construction')) return 'Construction';
+      if (cat.includes('ड्राइविंग') || cat.includes('Driving')) return 'Driving';
+      if (cat.includes('बिजली') || cat.includes('Electric')) return 'Electrical';
+      if (cat.includes('प्लंबर') || cat.includes('Plumb')) return 'Plumbing';
+      if (cat.includes('रसोई') || cat.includes('Cook')) return 'Cooking';
+      if (cat.includes('माली')) return 'Agriculture';
+      if (cat.includes('राजमिस्त्री')) return 'Construction';
+      return cat;
+    }
+
+    function mapCategoryToHindi(cat) {
+      const map = {
+        'Agriculture': '🌾 खेती',
+        'Construction': '🏗️ निर्माण',
+        'Driving': '🚛 ड्राइविंग',
+        'Electrical': '⚡ बिजली',
+        'Plumbing': '🪣 प्लंबर',
+        'Cooking': '🍳 रसोई',
+        'Handloom': '🧵 हथकरघा',
+        'Retail': '🛒 दुकान',
+        'Security': '💂 सुरक्षा',
+        'Tailoring': '👗 सिलाई',
+        'Cleaning': '🧹 सफ़ाई',
+        'Logistics': '📦 परिवहन'
+      };
+      return map[cat] || cat;
+    }
+
+    let workers = [];
+    let jobs = [];
+    let applications = [];
+
+    let currentAdminDistrict = '';
+
+    function getApplicationDistrict(app) {
+      if (app.district && app.district !== '-') return app.district;
+      const w = workers.find(x => x.name === app.worker);
+      if (w && w.district) return w.district;
+      const j = jobs.find(x => x.title === app.job || x.titleHi === app.job || x.titleEn === app.job);
+      if (j && j.district) return j.district;
+      return '';
+    }
+
+    function getAdminWorkers() {
+      if (!currentAdminDistrict) return workers;
+      return workers.filter(w => w.district === currentAdminDistrict);
+    }
+
+    function getAdminJobs() {
+      if (!currentAdminDistrict) return jobs;
+      return jobs.filter(j => j.district === currentAdminDistrict);
+    }
+
+    function getAdminApplications() {
+      if (!currentAdminDistrict) return applications;
+      return applications.filter(a => getApplicationDistrict(a) === currentAdminDistrict);
+    }
+
+    function getAdminActivities() {
+      if (!currentAdminDistrict) return activities;
+      return activities.filter(a => !a.district || a.district === currentAdminDistrict);
+    }
+
+    function openWorkerDetailById(id) {
+      const w = workers.find(x => x.id === id);
+      if (w) openWorkerDetail(w);
+    }
+
+    function saveWorkersToStorage() {
+      try { localStorage.setItem('ks_workers_db', JSON.stringify(workers)); } catch(e) {}
+    }
+
+    function saveJobsToStorage() {
+      const mapped = jobs.map(j => {
+        if (typeof j.wage === 'number') return j;
+        const numericWage = parseInt(j.wage.replace(/\D/g, ''), 10) || 400;
+        return {
+          id: j.id,
+          title: j.titleEn || j.title,
+          titleHi: j.title,
+          cat: mapCategoryToEnglish(j.category),
+          wage: numericWage,
+          loc: j.location,
+          district: j.district,
+          workers: j.workers,
+          filled: j.filled,
+          status: j.status,
+          urgent: j.urgent,
+          desc: j.desc,
+          posted: j.posted || 'Admin',
+          coords: j.coords || { lat: 26.2006, lng: 81.2330 }
+        };
+      });
+      try { localStorage.setItem('ks_jobs_db', JSON.stringify(mapped)); } catch(e) {}
+    }
+
+    function saveApplicationsToStorage() {
+      try { localStorage.setItem('ks_applications_db', JSON.stringify(applications)); } catch(e) {}
+    }
+
+    function syncToLegacyApplications() {
+      const legacyApps = applications.map(a => ({
+        appId: a.id,
+        worker: a.worker,
+        phone: a.phone || '-',
+        village: a.village,
+        district: a.district || '-',
+        skill: a.skill || '-',
+        wage: a.wage || '-',
+        job: a.job,
+        date: a.date,
+        status: a.status,
+        submittedAt: a.submittedAt || new Date().toISOString()
+      }));
+      try { localStorage.setItem('ks_applications', JSON.stringify(legacyApps)); } catch(e) {}
+    }
+
+    function loadDatabase() {
+      // 1. Workers
+      const storedWorkers = localStorage.getItem('ks_workers_db');
+      if (storedWorkers) {
+        workers = JSON.parse(storedWorkers);
+      } else {
+        workers = [...DEFAULT_WORKERS];
+        saveWorkersToStorage();
+      }
+
+      // 2. Jobs
+      const storedJobs = localStorage.getItem('ks_jobs_db');
+      if (storedJobs) {
+        const list = JSON.parse(storedJobs);
+        jobs = list.map(j => ({
+          id: j.id,
+          title: j.titleHi || j.title,
+          titleEn: j.title,
+          category: mapCategoryToHindi(j.cat),
+          wage: `₹${j.wage}/दिन`,
+          location: j.loc,
+          district: j.district || j.loc.split(',')[0].trim(),
+          workers: j.workers,
+          filled: j.filled,
+          status: j.status,
+          urgent: j.urgent,
+          desc: j.desc,
+          posted: j.posted,
+          coords: j.coords
+        }));
+      } else {
+        jobs = [...DEFAULT_JOBS];
+        saveJobsToStorage();
+      }
+
+      // 3. Applications
+      let apps = [];
+      const storedAppsDb = localStorage.getItem('ks_applications_db');
+      if (storedAppsDb) apps = JSON.parse(storedAppsDb);
+
+      const storedAppsLegacy = localStorage.getItem('ks_applications');
+      if (storedAppsLegacy) {
+        const legacyList = JSON.parse(storedAppsLegacy);
+        legacyList.forEach(app => {
+          const exists = apps.some(a => a.worker === app.worker && a.job === app.job && a.date === app.date);
+          if (!exists) {
+            apps.unshift({
+              id: app.appId || 'app_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+              worker: app.worker,
+              village: app.village || '-',
+              district: app.district || '-',
+              job: app.job,
+              jobsDone: app.jobsDone || 0,
+              phone: app.phone || '-',
+              skill: app.skill || '-',
+              experience: app.experience || '-',
+              wage: app.wage || '-',
+              date: app.date,
+              status: app.status || 'pending',
+              submittedAt: app.submittedAt || new Date().toISOString()
+            });
+          }
+        });
+      }
+
+      if (apps.length === 0) {
+        apps = [...DEFAULT_APPLICATIONS];
+      }
+
+      applications = apps;
+      saveApplicationsToStorage();
+      syncToLegacyApplications();
+    }
+
+    // Call loadDatabase immediately
+    loadDatabase();
+
+    // Storage Event Listener for real-time cross-tab updates
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'ks_jobs_db' || e.key === 'ks_workers_db' || e.key === 'ks_applications_db' || e.key === 'ks_applications') {
+        loadDatabase();
+        if (typeof initDashboard === 'function') {
+          initDashboard();
+        }
+      }
+    });
 
     const activities = [
-      { icon: '✅', color: 'var(--green-glow)', text: 'रामलाल यादव को "धान की कटाई" में assign किया गया', time: '2 मिनट पहले' },
-      { icon: '📋', color: 'var(--blue-glow)', text: 'राजकुमार पटेल ने "ट्रैक्टर ड्राइवर" के लिए आवेदन किया', time: '15 मिनट पहले' },
-      { icon: '⚡', color: 'var(--amber-glow)', text: '"बिजली मरम्मत" — urgent job post की गई (Ramnagar)', time: '32 मिनट पहले' },
-      { icon: '👷', color: 'rgba(139,92,246,0.15)', text: 'नया मज़दूर पंजीकृत: शांति देवी · Hasnabad · 🌾 खेती', time: '1 घंटा पहले' },
-      { icon: '✅', color: 'var(--green-glow)', text: 'मकान निर्माण — काम पूरा हुआ (Shekhpur)', time: '2 घंटे पहले' },
-      { icon: '❌', color: 'var(--red-glow)', text: 'दुर्गा प्रसाद का आवेदन अस्वीकार — अनुभव कम', time: '3 घंटे पहले' },
-      { icon: '📋', color: 'var(--blue-glow)', text: 'मुन्नी देवी ने "गेहूँ बुआई" के लिए आवेदन किया', time: '4 घंटे पहले' },
-      { icon: '💰', color: 'var(--green-glow)', text: 'रसोई सहायक — ₹700 मज़दूरी transfer हुई', time: 'कल' },
+      { icon: '✅', color: 'var(--green-glow)', text: 'रामलाल यादव को "धान की कटाई" में assign किया गया', time: '2 मिनट पहले', district: 'Lucknow' },
+      { icon: '📋', color: 'var(--blue-glow)', text: 'राजकुमार पटेल ने "ट्रैक्टर ड्राइवर" के लिए आवेदन किया', time: '15 मिनट पहले', district: 'Agra' },
+      { icon: '⚡', color: 'var(--amber-glow)', text: '"बिजली मरम्मत" — urgent job post की गई (Ramnagar)', time: '32 मिनट पहले', district: 'Lucknow' },
+      { icon: '👷', color: 'rgba(139,92,246,0.15)', text: 'नया मज़दूर पंजीकृत: शांति देवी · Hasnabad · 🌾 खेती', time: '1 घंटा पहले', district: 'Varanasi' },
+      { icon: '✅', color: 'var(--green-glow)', text: 'मकान निर्माण — काम पूरा हुआ (Shekhpur)', time: '2 घंटे पहले', district: 'Gorakhpur' },
+      { icon: '❌', color: 'var(--red-glow)', text: 'दुर्गा प्रसाद का आवेदन अस्वीकार — अनुभव कम', time: '3 घंटे पहले', district: 'Gorakhpur' },
+      { icon: '📋', color: 'var(--blue-glow)', text: 'मुन्नी देवी ने "गेहूँ बुआई" के लिए आवेदन किया', time: '4 घंटे पहले', district: 'Prayagraj' },
+      { icon: '💰', color: 'var(--green-glow)', text: 'रसोई सहायक — ₹700 मज़दूरी transfer हुई', time: 'कल', district: 'Lucknow' },
     ];
 
     // ============================================================
@@ -2711,12 +3439,36 @@
     // ============================================================
     // ADMIN LOGIN
     // ============================================================
+    function updateAdminInfoUI(dist) {
+      const adminRoleEl = document.querySelector('.admin-info-role');
+      const adminNameEl = document.querySelector('.admin-info-name');
+      const topbarSubEl = document.getElementById('pageSubtitle');
+      
+      if (adminNameEl) {
+        adminNameEl.textContent = `${dist} Admin`;
+      }
+      if (adminRoleEl) {
+        adminRoleEl.textContent = `🏛️ ${dist} District`;
+      }
+      if (topbarSubEl) {
+        topbarSubEl.textContent = `KaamSetu ग्राम रोज़गार पोर्टल · जिला प्रशासन (${dist})`;
+      }
+    }
+
     function doLogin() {
       const user = document.getElementById('loginUser').value.trim();
       const pass = document.getElementById('loginPass').value.trim();
+      const dist = document.getElementById('loginDistrict').value;
       const err = document.getElementById('loginError');
+      
       if (user === ADMIN_CREDS.user && pass === ADMIN_CREDS.pass) {
+        if (!dist) {
+          showToast('⚠️ कृपया अपना जिला चुनें! / Please select a district!');
+          return;
+        }
         err.style.display = 'none';
+        currentAdminDistrict = dist;
+        updateAdminInfoUI(dist);
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('dashboard').style.display = 'block';
         loadRealApplications();
@@ -2731,10 +3483,121 @@
     document.getElementById('loginUser').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 
     function doLogout() {
+      currentAdminDistrict = '';
+      document.getElementById('loginDistrict').value = '';
       document.getElementById('dashboard').style.display = 'none';
       document.getElementById('loginScreen').style.display = 'flex';
       document.getElementById('loginUser').value = '';
       document.getElementById('loginPass').value = '';
+    }
+
+    // ============================================================
+    // REAL UP DISTRICT → VILLAGE DATA
+    // ============================================================
+    const UP_VILLAGES = {
+      'Lucknow':     ['Malihabad','Bakshi Ka Talab','Mohanlalganj','Chinhat','Gosainganj','Kakori','Itaunja','Sarojini Nagar','Malhour','Gudamba'],
+      'Varanasi':    ['Sarnath','Chiraigaon','Arajiline','Harhua','Pindra','Kashi Vidyapeeth','Cholapur','Harahua','Sewapuri','Baragaon'],
+      'Gorakhpur':   ['Sahjanwa','Chauri Chaura','Campierganj','Pipraich','Gola','Bansgaon','Khajni','Padrauna','Bhathat','Khorabar'],
+      'Prayagraj':   ['Phulpur','Bara','Mauaima','Soraon','Chail','Handia','Karchhana','Koraon','Meja','Jasra'],
+      'Agra':        ['Fatehabad','Etmadpur','Kheragarh','Bah','Fatehpur Sikri','Pinahat','Achhnera','Bichpuri','Runakta','Dayalbagh'],
+      'Kanpur Nagar':['Ghatampur','Bidhnu','Kakwan','Kalyanpur','Armapur','Juhi','Kidwai Nagar','Chakeri','Barra','Sarsaul'],
+      'Kanpur Dehat':['Derapur','Bhognipur','Rasulabad','Akbarpur','Jhinjhak','Ramabad','Pukhrayan','Sarvankheda','Malasa','Maitha'],
+      'Jhansi':      ['Mauranipur','Moth','Gursarai','Bangra','Babina','Barua Sagar','Garautha','Chirgaon','Bhander','Datia'],
+      'Raebareli':   ['Salon','Tiloi','Jagdishpur','Dalmau','Unchahar','Sareni','Lalganj','Harchandpur','Dalmau Dehat','Deeh'],
+      'Barabanki':   ['Fatehpur','Haidergarh','Nawabganj','Masauli','Ramsanehighat','Sirauli Gauspur','Siddhaur','Ramnagar','Trivediganj','Dewa'],
+      'Sultanpur':   ['Musafirkhana','Lambhua','Kadipur','Ishauli','Gauriganj','Jagdishpur','Kurwar','Akhand Nagar','Bhadaini','Dubeypur'],
+      'Azamgarh':    ['Phulpur','Mehnagar','Lalganj','Sagri','Jiyanpur','Koilsa','Martinganj','Atraulia','Burhanpur','Nizamabad'],
+      'Mathura':     ['Vrindavan','Govardhan','Baldeo','Mant','Chhata','Kosi Kalan','Nandgaon','Barsana','Raya','Mahavan'],
+      'Meerut':      ['Sardhana','Modinagar','Pilkhuwa','Muradnagar','Garhmukteshwar','Rajnagar','Hapur','Dasna','Bhojpur','Kithore'],
+      'Basti':       ['Harraiya','Kaptanganj','Menhdawal','Naugarh','Rudhauli','Bankegaon','Salapur','Khorabar','Sadar Bazar','Domariyaganj'],
+      'Sitapur':     ['Sidhauli','Mishrik','Laharpur','Biswan','Mahmoodabad','Hargaon','Rampur Mathura','Khairabad','Parsendi','Tambaur'],
+      'Aligarh':     ['Atrauli','Khair','Iglas','Gabhana','Jawan','Lodha','Tappal','Bijauli','Akrabad','Mursan'],
+      'Amroha':      ['Hasanpur','Gajraula','Dhanaura','Naugawan Sadat','Bachhraon','Titawi','Sambhalhera','Rajpur','Mandawar','Kanth'],
+      'Baghpat':     ['Baraut','Khekra','Pilana','Chhaprauli','Baghpat Sadar','Doghat','Asgharpur','Binauli','Ramala','Sikheda'],
+      'Bijnor':      ['Najibabad','Nagina','Chandpur','Seohara','Dhampur','Kiratpur','Noorpur','Afzalgarh','Sherkot','Mandawar'],
+      'Bulandshahr': ['Anupshahr','Siyana','Khurja','Sikandrabad','Dibai','Gulaothi','Shikarpur','Jahangirabad','Bugrasi','Lakhaoti'],
+      'Etah':        ['Jalesar','Kasganj','Aliganj','Marhra','Soron','Awagarh','Ganjdundwara','Patiyali','Shitab Diara','Shekhupura'],
+      'Etawah':      ['Saifai','Bharthana','Jaswantnagar','Ajitmal','Dibiyapur','Bidhuna','Phaphund','Rajpur','Saurikh','Chakarnagar'],
+      'Firozabad':   ['Shikohabad','Tundla','Jasrana','Sirsaganj','Araon','Narkhi','Hathwant','Pachgaon','Kheriya','Lohiya Nagar'],
+      'Gautam Buddha Nagar':['Noida Sector 135','Greater Noida','Dadri','Jewar','Dankaur','Bisrakh','Surajpur','Rabupura','Kasna','Badalpur'],
+      'Ghaziabad':   ['Loni','Muradnagar','Modinagar','Tronica City','Vijay Nagar','Kavi Nagar','Vasundhara','Indirapuram','Sahibabad','Masuri'],
+      'Hathras':     ['Sadabad','Sikandra Rao','Sasni','Mursan','Hasayan','Chandpa','Mendu','Sahpau','Rura','Madora'],
+      'Kasganj':     ['Patiyali','Sahawar','Ganjdundwara','Sidhpura','Amanpur','Soron','Kira','Ameen','Shamsabad','Bharthana'],
+      'Mainpuri':    ['Karhal','Shikohabad','Bhongaon','Kishni','Kuraoli','Barnahal','Jaswantnagar','Ghiror','Surai','Soron'],
+      'Moradabad':   ['Bilari','Thakurdwara','Dilari','Bahjoi','Kundarki','Amroha','Chandausi','Sambhal','Suar','Katghar'],
+      'Muzaffarnagar':['Khatauli','Budhana','Charthawal','Purkazi','Jansath','Kairana','Shamli','Thanabhawan','Nanauta','Shahpur'],
+      'Rampur':      ['Milak','Suar','Chamraua','Tanda','Shahabad','Bilaspur','Shahu','Nawada','Pipalsana','Azimpur'],
+      'Sambhal':     ['Chandausi','Gunnaur','Bahjoi','Narora','Bholapura','Rajpura','Sursadan','Nakhasa','Asmoli','Puwayan'],
+      'Saharanpur':  ['Deoband','Nakur','Rampur Maniharan','Gangoh','Badhsarahi','Sarsawa','Bhagwanpur','Behat','Muzaffarabad','Fatehpur'],
+      'Shamli':      ['Kairana','Thana Bhawan','Budhana','Un','Jhinjhana','Kandhla','Chandpur','Shamli Sadar','Ganeshpur','Ladhaura'],
+      'Auraiya':     ['Bidhuna','Dibiyapur','Phaphund','Ajitmal','Achhalda','Sahar','Bhagwantnagar','Pukhrayan','Rasulabad','Rura'],
+      'Farrukhabad': ['Fatehgarh','Kayamganj','Kamalganj','Shamsabad','Nibkarori','Rajpur','Amritpur','Chhibramau','Kaimganj','Talgram'],
+      'Fatehpur':    ['Bindki','Khaga','Hussainganj','Malwan','Bahua','Amauli','Hathgaon','Deo','Dhata','Asothar'],
+      'Hardoi':      ['Sandila','Shahabad','Bilgram','Bawan','Sandi','Pihani','Kachhauna','Madhoganj','Tadiyawan','Malhabad'],
+      'Kannauj':     ['Tirwa','Chhibramau','Umarda','Talgram','Sarai Miran','Gursamai','Jalalabad','Saurikh','Haseran','Sakeet'],
+      'Unnao':       ['Safipur','Purwa','Bangarmau','Shuklaganj','Hasanganj','Nawabganj','Auras','Bighapur','Fatehpur Chaurasi','Maurawan'],
+      'Ambedkar Nagar':['Tanda','Akbarpur','Jalalpur','Bhiti','Bhiyaon','Alapur','Ram Nagar','Ramnagar Theri','Katehri','Khandauli'],
+      'Amethi':      ['Gauriganj','Musafirkhana','Salon','Jagdishpur','Bhendal','Sangrampur','Tiloi','Bazar Shukul','Baraudi','Singhpur'],
+      'Ayodhya':     ['Sohawal','Bikapur','Milkipur','Rudauli','Pura Bazar','Masodha','Maya Bazar','Bharatkund','Haibatpur','Tanda'],
+      'Ballia':      ['Rasra','Sikandarpur','Bansdih','Maniyar','Nagra','Belhari','Murli Chhapra','Reoti','Bairia','Chilkahar'],
+      'Balrampur':   ['Utraula','Tulsipur','Gaisdi','Pachperwa','Hauzpur','Ikauna','Gaindas Buzurg','Babhnan','Shravasti Dehat','Rehra Bazar'],
+      'Chandauli':   ['Sakaldiha','Chahaniya','Niyamatabad','Chakiya','Barhani','Chakia','Dhanapur','Mughal Sarai','Saidabad','Alinagar'],
+      'Deoria':      ['Salempur','Barhaj','Lar','Bhatpar Rani','Rudrapur','Rampur Karkhana','Pathardeva','Tarkulwa','Dekuli','Gauri Bazar'],
+      'Ghazipur':    ['Saidpur','Mohammedabad','Jakhania','Zamania','Karanda','Bhitari','Sikandarpur','Kasimabad','Deokali','Nandganj'],
+      'Jaunpur':     ['Kerakat','Mungra Badshahpur','Machhali Shahar','Shahganj','Mariyahu','Sujanganj','Madiyahun','Dobhi','Rampur','Barsathi'],
+      'Kushinagar':  ['Padrauna','Tamkuhi Raj','Hata','Khadda','Fazilnagar','Ramkola','Sukrauli','Dudahi','Kasia','Nebua Naurangia'],
+      'Maharajganj': ['Nautanwa','Siswa Bazar','Ghughuli','Partawal','Nichlaul','Sonauli','Pharenda','Mithaura','Lakshmipur','Bridgmanganj'],
+      'Mau':         ['Ghosi','Kopaganj','Madhuban','Dohrighat','Ratanpura','Muhammadabad Gohna','Phephna','Mau Dehat','Barhat','Bargaon'],
+      'Mirzapur':    ['Chunar','Lalganj','Marihan','Hallia','Kon','Majhawan','Ahraura','Naigarhi','Jayath','Vindhyachal'],
+      'Sant Kabir Nagar':['Khalilabad','Menhdawal','Dhanapur','Baghauli','Semariyawan','Naugarh','Birdpur','Hainsar Bazar','Bansi','Itu'],
+      'Sant Ravidas Nagar':['Bhadohi','Gyanpur','Aurai','Suriyawan','Gopiganj','Deegh','Abholi','Khalispur','Chauri','Sarkhon'],
+      'Siddharth Nagar':['Naugarh','Itwa','Bhanwapur','Jogia','Shohratgarh','Birdpur','Khuniyaon','Bardia','Kherwa','Bansi'],
+      'Sonbhadra':   ['Robertsganj','Obra','Chopan','Babhani','Dudhi','Ghorawal','Myorpur','Nakaha','Anpara','Renukoot'],
+      'Banda':       ['Atarra','Baberu','Naraini','Tindwari','Bisanda','Kamasin','Badausa','Jaspura','Pailani','Karwi'],
+      'Chitrakoot':  ['Karwi','Manikpur','Mau','Pahari','Ramnagar','Sitapur','Shivrampura','Puranpur','Chauk','Devipur'],
+      'Hamirpur':    ['Rath','Maudaha','Sumer Pur','Sarila','Kurara','Charkhari','Girwan','Gohand','Biasanpur','Rastara'],
+      'Jalaun':      ['Orai','Konch','Madhaugarh','Kalpi','Rampura','Nadigaon','Kuthond','Kulpahar','Gaura','Moth'],
+      'Lalitpur':    ['Mehrauni','Talbehat','Pali','Birdha','Jakhlaun','Bar','Madawara','Niwari','Prithvipur','Chanderi'],
+      'Mahoba':      ['Charkhari','Kabrai','Kulpahar','Srinagar','Panwari','Jaitpur','Mahoba Sadar','Badagaon','Rajnagar','Khanna'],
+      'Bahraich':    ['Nanpara','Payagpur','Jarwal','Mahasi','Tejwapur','Mihinpurwa','Kaiserganj','Fakhpur','Huzoorpur','Balha'],
+      'Gonda':       ['Mankapur','Tarabganj','Colonelganj','Paraspur','Umri Kewat','Nawabganj','Kathola','Haldharmau','Itiyathok','Babhanjot'],
+      'Lakhimpur Kheri':['Palia Kalan','Nighasan','Dhaurhara','Gola Gokarnath','Mohammadi','Kumbhi','Behjam','Isanagar','Bijua','Nakaha Jungle'],
+      'Pilibhit':    ['Bisalpur','Barkhera','Puranpur','Amariya','Kalinagar','Bilsanda','Gajraula','Marhana','Bhamora','Sadar'],
+      'Shravasti':   ['Ikauna','Bhinga','Sirsia','Jamunaha','Gilaula','Malhipur','Hariharpur Rani','Mahuli','Tulsahawa','Payagpur'],
+      'Kaushambi':   ['Sirathu','Manjhanpur','Chail','Sarai Akil','Newajganj','Sarsawa','Bharwari','Pipri','Kokhraj','Korion'],
+      'Pratapgarh':  ['Kunda','Lalganj','Patti','Raniganj','Antu','Sanda','Sangipur','Mandhata','Shivganj','Rampur Khas'],
+    };
+
+    // ============================================================
+    // DISTRICT → VILLAGE DROPDOWN
+    // ============================================================
+    function updateVillageDropdown() {
+      const dist = document.getElementById('workerDistrict').value;
+      const villageSelect = document.getElementById('workerVillage');
+      villageSelect.innerHTML = '';
+      if (!dist) {
+        villageSelect.innerHTML = '<option value="">-- पहले जिला चुनें --</option>';
+        return;
+      }
+      const villages = UP_VILLAGES[dist] || [];
+      villageSelect.innerHTML = '<option value="">-- गाँव चुनें / Select Village --</option>';
+      villages.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v;
+        opt.textContent = v;
+        villageSelect.appendChild(opt);
+      });
+    }
+
+    // ============================================================
+    // SKILL SELECTION
+    // ============================================================
+    let _selectedSkill = '';
+    function selectSkill(el, skill) {
+      document.querySelectorAll('.skill-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      _selectedSkill = skill;
+      document.getElementById('workerSkillSelected').value = skill;
     }
 
     // ============================================================
@@ -2743,35 +3606,169 @@
     function doWorkerLogin() {
       const phone = document.getElementById('workerPhone').value.trim();
       const name = document.getElementById('workerName').value.trim();
-      const village = document.getElementById('workerVillage').value.trim();
+      const district = document.getElementById('workerDistrict').value;
+      const village = document.getElementById('workerVillage').value;
+      const skill = _selectedSkill;
       const err = document.getElementById('workerLoginError');
-      if (!phone || phone.length < 10 || !name || !village) {
+      if (!phone || phone.length < 10 || !name || !district || !village || !skill) {
         err.style.display = 'block';
         return;
       }
       err.style.display = 'none';
-      // Save worker session
-      try { localStorage.setItem('ks_worker_session', JSON.stringify({ phone, name, village })); } catch(e) {}
+      const session = { phone, name, district, village, skill };
+      // Save to localStorage (persistent)
+      try { localStorage.setItem('ks_worker_session', JSON.stringify(session)); } catch(e) {}
+      // Also set a cookie (30 days)
+      const expires = new Date(Date.now() + 30*24*60*60*1000).toUTCString();
+      document.cookie = `ks_worker=${encodeURIComponent(JSON.stringify(session))};expires=${expires};path=/;SameSite=Lax`;
+      openWorkerDashboard(session);
+    }
+
+    function autoLoginWorker() {
+      const session = getSavedWorkerSession();
+      if (session) openWorkerDashboard(session);
+    }
+
+    function getSavedWorkerSession() {
+      // Try localStorage first
+      try {
+        const s = localStorage.getItem('ks_worker_session');
+        if (s) return JSON.parse(s);
+      } catch(e) {}
+      // Try cookie
+      try {
+        const match = document.cookie.match(/ks_worker=([^;]+)/);
+        if (match) return JSON.parse(decodeURIComponent(match[1]));
+      } catch(e) {}
+      return null;
+    }
+
+    function openWorkerDashboard(session) {
+      const { phone, name, district, village, skill } = session;
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('workerDashboard').style.display = 'block';
-      // Fill worker dashboard
+      // Header info
       document.getElementById('wDashAvatar').textContent = name[0].toUpperCase();
       document.getElementById('wDashName').textContent = name;
       document.getElementById('wDashMeta').innerHTML = `📱 ${phone} &nbsp;·&nbsp; 🏘️ ${village}`;
+      document.getElementById('wDashSkill').textContent = skill;
+      document.getElementById('wDashDistrict').textContent = `📍 ${district}`;
+      // Village short label in stats
+      document.getElementById('wStatVillage').textContent = village.split(' ')[0];
+      // Jobs header
+      document.getElementById('wJobsHeader').innerHTML = `${skill} — ${district} की नौकरियाँ`;
+      // Load matching jobs
+      renderWorkerMatchedJobs(skill, district, village, phone, name);
       loadWorkerApplications(phone, name);
     }
 
     document.getElementById('workerPhone').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('workerName').focus(); });
-    document.getElementById('workerName').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('workerVillage').focus(); });
-    document.getElementById('workerVillage').addEventListener('keydown', e => { if (e.key === 'Enter') doWorkerLogin(); });
+    document.getElementById('workerName').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('workerDistrict').focus(); });
+
+    // ============================================================
+    // WORKER MATCHED JOBS RENDERER
+    // ============================================================
+    const _workerAppliedJobs = new Set();
+    try { const saved = JSON.parse(localStorage.getItem('ks_applied_jobs') || '[]'); saved.forEach(id => _workerAppliedJobs.add(id)); } catch(e) {}
+
+    function renderWorkerMatchedJobs(skill, district, village, phone, name) {
+      // Filter jobs that match skill category and district/nearby location
+      const skillKey = skill.replace(/[^\u0900-\u097F\w]/g, '').toLowerCase();
+      const matched = jobs.filter(j => {
+        const jSkill = j.category.replace(/[^\u0900-\u097F\w]/g, '').toLowerCase();
+        return jSkill === skillKey;
+      });
+
+      // Sort: urgent first, then vacant, then active
+      matched.sort((a,b) => {
+        if (a.urgent && !b.urgent) return -1;
+        if (!a.urgent && b.urgent) return 1;
+        if (a.status === 'vacant' && b.status !== 'vacant') return -1;
+        if (a.status !== 'vacant' && b.status === 'vacant') return 1;
+        return 0;
+      });
+
+      const cont = document.getElementById('wMatchedJobsList');
+      document.getElementById('wStatJobs').textContent = matched.length;
+      document.getElementById('wJobCount').textContent = matched.length + ' Jobs';
+
+      if (!matched.length) {
+        cont.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted);">
+          <div style="font-size:40px;margin-bottom:12px;">🔍</div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:6px;">अभी ${skill} के काम नहीं हैं</div>
+          <div style="font-size:12px;">जल्द ही नए काम आएंगे। कल वापस चेक करें।</div>
+        </div>`;
+        return;
+      }
+
+      cont.innerHTML = matched.map(j => {
+        const isApplied = _workerAppliedJobs.has(j.id);
+        const isUrgent = j.urgent;
+        const isVacant = j.status === 'vacant';
+        const spots = j.workers - j.filled;
+        return `
+        <div class="w-job-card ${isUrgent ? 'urgent-card' : ''}">
+          <div class="w-job-card-header">
+            <div class="w-job-icon">${j.category.split(' ')[0]}</div>
+            <div style="flex:1;">
+              <div class="w-job-title">${j.title}</div>
+              <div class="w-job-meta">📍 ${j.location} · ${district}</div>
+            </div>
+            <div class="w-job-wage">${j.wage}</div>
+          </div>
+          <div class="w-job-tags">
+            ${isUrgent ? '<span class="badge red">⚡ Urgent</span>' : ''}
+            ${isVacant ? '<span class="badge amber">🔓 '+spots+' जगह खाली</span>' : j.status === 'active' ? '<span class="badge blue">⚙️ चल रहा है</span>' : '<span class="badge" style="background:rgba(107,114,128,0.1);color:#9ca3af;">✅ भर गया</span>'}
+            <span class="badge green">💰 ${j.wage}</span>
+          </div>
+          <div style="font-size:12px;color:var(--text-secondary);margin-top:8px;">${j.desc}</div>
+          <button class="w-apply-btn ${isApplied ? 'applied' : ''}" id="applyBtn-${j.id}" onclick="workerApplyJob(${j.id},'${j.title}','${phone}','${name}','${village}','${district}','${skill}')">
+            ${isApplied ? '✅ आवेदन दिया जा चुका है' : '📋 अभी Apply करें'}
+          </button>
+        </div>`;
+      }).join('');
+    }
+
+    function workerApplyJob(jobId, jobTitle, phone, name, village, district, skill) {
+      if (_workerAppliedJobs.has(jobId)) { showToast('✅ पहले ही आवेदन दे दिया है!'); return; }
+      _workerAppliedJobs.add(jobId);
+      // Save to applied list
+      try { localStorage.setItem('ks_applied_jobs', JSON.stringify([..._workerAppliedJobs])); } catch(e) {}
+      // Save application
+      const app = {
+        phone, worker: name, village, district, skill,
+        job: jobTitle, catIcon: jobs.find(j=>j.id===jobId)?.category?.split(' ')[0] || '💼',
+        date: new Date().toLocaleDateString('hi-IN', {day:'2-digit',month:'short'}),
+        status: 'pending'
+      };
+      try {
+        const existing = JSON.parse(localStorage.getItem('ks_applications') || '[]');
+        existing.push(app);
+        localStorage.setItem('ks_applications', JSON.stringify(existing));
+      } catch(e) {}
+      // Update button UI
+      const btn = document.getElementById('applyBtn-' + jobId);
+      if (btn) { btn.textContent = '✅ आवेदन दिया जा चुका है'; btn.classList.add('applied'); }
+      // Update stats
+      document.getElementById('wStatApplied').textContent = _workerAppliedJobs.size;
+      showToast(`✅ "${jobTitle}" के लिए आवेदन दिया! Admin जल्द संपर्क करेंगे।`);
+      loadWorkerApplications(phone, name);
+    }
 
     function doWorkerLogout() {
       try { localStorage.removeItem('ks_worker_session'); } catch(e) {}
+      // Clear cookie
+      document.cookie = 'ks_worker=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
       document.getElementById('workerDashboard').style.display = 'none';
       document.getElementById('loginScreen').style.display = 'flex';
+      // Reset fields
       document.getElementById('workerPhone').value = '';
       document.getElementById('workerName').value = '';
-      document.getElementById('workerVillage').value = '';
+      document.getElementById('workerDistrict').value = '';
+      updateVillageDropdown();
+      document.querySelectorAll('.skill-card').forEach(c => c.classList.remove('selected'));
+      _selectedSkill = '';
+      document.getElementById('savedSessionBanner').style.display = 'none';
     }
 
     function loadWorkerApplications(phone, name) {
@@ -2779,18 +3776,21 @@
       try {
         const stored = JSON.parse(localStorage.getItem('ks_applications') || '[]');
         const myApps = stored.filter(a => a.phone === phone || a.worker === name);
+        document.getElementById('wStatApplied').textContent = myApps.length;
         if (!myApps.length) {
-          cont.innerHTML = `<div style="text-align:center; padding:32px; color:var(--text-muted); font-size:13px;">📋 अभी कोई आवेदन नहीं है<br><br><a href="jobs.html" style="color:var(--green-light); font-weight:600;">Jobs देखें और Apply करें →</a></div>`;
+          cont.innerHTML = `<div style="text-align:center; padding:32px; color:var(--text-muted); font-size:13px;">📋 अभी कोई आवेदन नहीं है</div>`;
           return;
         }
         cont.innerHTML = myApps.map(a => `
-          <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:16px; display:flex; align-items:center; gap:14px;">
-            <div style="font-size:30px; flex-shrink:0;">${a.catIcon || '💼'}</div>
-            <div style="flex:1;">
-              <div style="font-size:14px; font-weight:700; margin-bottom:4px;">${a.job}</div>
-              <div style="font-size:12px; color:var(--text-muted);">📍 ${a.village} · 📅 ${a.date}</div>
+          <div class="w-job-card" style="border-left-color:${a.status==='approved'?'var(--green-light)':a.status==='rejected'?'var(--red)':'var(--amber)'}">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="font-size:28px;flex-shrink:0;">${a.catIcon || '💼'}</div>
+              <div style="flex:1;">
+                <div style="font-size:14px;font-weight:700;margin-bottom:3px;">${a.job}</div>
+                <div style="font-size:11px;color:var(--text-muted);">📍 ${a.village || a.district || '—'} · 📅 ${a.date}</div>
+              </div>
+              <div>${a.status==='approved'?'<span class="badge green">✅ Approved</span>':a.status==='rejected'?'<span class="badge red">❌ Rejected</span>':'<span class="badge amber">⏳ Pending</span>'}</div>
             </div>
-            <div>${a.status === 'approved' ? '<span class="badge green">✅ Approved</span>' : a.status === 'rejected' ? '<span class="badge red">❌ Rejected</span>' : '<span class="badge amber">⏳ Pending</span>'}</div>
           </div>
         `).join('');
       } catch(e) {
@@ -2852,10 +3852,10 @@
       renderFullMap();
       renderRecentApps();
       renderVacantJobs();
-      renderApplicationsTable(applications);
+      renderApplicationsTable(getAdminApplications());
       renderJobKanban();
       renderWorkersGrid();
-      renderWorkerStatusList(workers);
+      renderWorkerStatusList(getAdminWorkers());
       renderAvailableWorkers();
       renderVacantJobAssignList();
       populateAssignSelects();
@@ -2916,7 +3916,8 @@
 
     function renderMiniMap() {
       const map = document.getElementById('miniMap');
-      const subset = workers.slice(0, 8);
+      map.querySelectorAll('.worker-dot').forEach(el => el.remove());
+      const subset = getAdminWorkers().slice(0, 8);
       subset.forEach(w => {
         const dot = document.createElement('div');
         dot.className = `worker-dot ${w.status}`;
@@ -2937,7 +3938,8 @@
 
     function renderFullMap() {
       const map = document.getElementById('fullMap');
-      workers.forEach(w => {
+      map.querySelectorAll('.worker-dot').forEach(el => el.remove());
+      getAdminWorkers().forEach(w => {
         const dot = document.createElement('div');
         dot.className = `worker-dot ${w.status}`;
         dot.style.left = w.mapX + '%';
@@ -2971,7 +3973,7 @@
     // ============================================================
     function renderRecentApps() {
       const cont = document.getElementById('recentApps');
-      const recent = applications.slice(0, 5);
+      const recent = getAdminApplications().slice(0, 5);
       cont.innerHTML = recent.map(a => `
     <div class="application-row">
       <div style="width:36px; height:36px; background:${avatarBg(a.worker)}; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:#fff; flex-shrink:0;">${a.worker[0]}</div>
@@ -2992,7 +3994,7 @@
     // ============================================================
     function renderVacantJobs() {
       const cont = document.getElementById('vacantJobsList');
-      const vacant = jobs.filter(j => j.status === 'vacant');
+      const vacant = getAdminJobs().filter(j => j.status === 'vacant');
       cont.innerHTML = vacant.map(j => `
     <div class="application-row">
       <div style="font-size:24px;">${j.category.split(' ')[0]}</div>
@@ -3043,13 +4045,14 @@
       <td style="font-size:12px; color:var(--text-muted);">${a.date}</td>
       <td>${statusBadge(a.status)}</td>
       <td>
-        <div style="display:flex; gap:5px; flex-wrap:wrap;">
+        <div style="display:flex; gap:5px; flex-wrap:wrap; align-items:center;">
           ${a.status === 'pending' ? `
             <button class="btn btn-primary btn-sm" onclick="approveApp(${a.id})">✅ मंज़ूर</button>
             <button class="btn btn-red btn-sm" onclick="rejectApp(${a.id})">❌</button>
           ` : a.status === 'approved' ? `
             ${phoneLink ? `<a href="https://wa.me/91${phoneLink}?text=${waApproveMsg}" target="_blank" class="btn btn-amber btn-sm">💬 WhatsApp</a>` : `<button class="btn btn-amber btn-sm" onclick="showToast('WhatsApp भेजा!')">💬 WhatsApp</button>`}
           ` : `<span style="font-size:11px; color:var(--text-muted);">—</span>`}
+          <button style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:13px; padding:2px 4px; transition:color 0.2s;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--text-muted)'" onclick="deleteApplicationByAdmin(${a.id})" title="आवेदन हटाएँ">🗑️</button>
         </div>
       </td>
     </tr>
@@ -3057,8 +4060,25 @@
       document.getElementById('appCount').textContent = data.length;
     }
 
+    function deleteApplicationByAdmin(id) {
+      if (!confirm('क्या आप सचमुच इस आवेदन को हटाना चाहते हैं?')) return;
+      const index = applications.findIndex(a => a.id == id);
+      if (index !== -1) {
+        const workerName = applications[index].worker;
+        applications.splice(index, 1);
+        saveApplicationsToStorage();
+        syncToLegacyApplications();
+        renderApplicationsTable(getAdminApplications());
+        renderRecentApps();
+        animateCounters();
+        showToast('🗑️ आवेदन हटाया गया: ' + workerName);
+      }
+    }
+
+
+
     function filterTable(q) {
-      const filtered = applications.filter(a =>
+      const filtered = getAdminApplications().filter(a =>
         a.worker.toLowerCase().includes(q.toLowerCase()) ||
         a.job.toLowerCase().includes(q.toLowerCase())
       );
@@ -3066,17 +4086,31 @@
     }
 
     function filterByStatus(s) {
-      const filtered = s ? applications.filter(a => a.status === s) : applications;
+      const filtered = s ? getAdminApplications().filter(a => a.status === s) : getAdminApplications();
       renderApplicationsTable(filtered);
     }
 
     function approveApp(id) {
       const app = applications.find(a => a.id === id);
-      if (app) { app.status = 'approved'; renderApplicationsTable(applications); renderRecentApps(); showToast('✅ ' + app.worker + ' का आवेदन मंज़ूर हुआ!'); }
+      if (app) { 
+        app.status = 'approved'; 
+        saveApplicationsToStorage();
+        syncToLegacyApplications();
+        renderApplicationsTable(getAdminApplications()); 
+        renderRecentApps(); 
+        showToast('✅ ' + app.worker + ' का आवेदन मंज़ूर हुआ!'); 
+      }
     }
     function rejectApp(id) {
       const app = applications.find(a => a.id === id);
-      if (app) { app.status = 'rejected'; renderApplicationsTable(applications); renderRecentApps(); showToast('❌ आवेदन अस्वीकार किया गया'); }
+      if (app) { 
+        app.status = 'rejected'; 
+        saveApplicationsToStorage();
+        syncToLegacyApplications();
+        renderApplicationsTable(getAdminApplications()); 
+        renderRecentApps(); 
+        showToast('❌ आवेदन अस्वीकार किया गया'); 
+      }
     }
 
     // ============================================================
@@ -3091,9 +4125,10 @@
       ];
       const kanban = document.getElementById('jobKanban');
       kanban.innerHTML = cols.map(col => {
+        const adminJobs = getAdminJobs();
         const colJobs = col.key === 'urgent'
-          ? jobs.filter(j => j.urgent && j.status !== 'completed')
-          : jobs.filter(j => j.status === col.key);
+          ? adminJobs.filter(j => j.urgent && j.status !== 'completed')
+          : adminJobs.filter(j => j.status === col.key);
         return `
       <div class="kanban-col">
         <div class="kanban-col-header">
@@ -3103,7 +4138,10 @@
         <div class="kanban-items">
           ${colJobs.map(j => `
             <div class="kanban-item" onclick="showToast('💼 ${j.title} — ${j.location}')">
-              <div style="font-size:18px; margin-bottom:6px;">${j.category.split(' ')[0]}</div>
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div style="font-size:18px; margin-bottom:6px;">${j.category.split(' ')[0]}</div>
+                <button style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:13px; padding:2px 4px; transition:color 0.2s;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--text-muted)'" onclick="event.stopPropagation(); deleteJobByAdmin(${j.id});" title="काम हटाएँ">🗑️</button>
+              </div>
               <div class="kanban-item-title">${j.title}</div>
               <div class="kanban-item-meta">📍 ${j.location} · ${j.wage}</div>
               <div class="kanban-item-meta" style="margin-top:4px;">👷 ${j.filled}/${j.workers} मज़दूर</div>
@@ -3119,23 +4157,42 @@
       }).join('');
     }
 
+    function deleteJobByAdmin(id) {
+      if (!confirm('क्या आप सचमुच इस काम को हटाना चाहते हैं?')) return;
+      const index = jobs.findIndex(j => j.id == id);
+      if (index !== -1) {
+        const title = jobs[index].title;
+        jobs.splice(index, 1);
+        saveJobsToStorage();
+        renderJobKanban();
+        renderVacantJobs();
+        renderVacantJobAssignList();
+        populateAssignSelects();
+        animateCounters();
+        showToast('🗑️ काम हटाया गया: ' + title);
+      }
+    }
+
     // ============================================================
     // WORKERS GRID
     // ============================================================
     function renderWorkersGrid() {
       const grid = document.getElementById('workersGrid');
-      grid.innerHTML = workers.map(w => {
+      grid.innerHTML = getAdminWorkers().map(w => {
         const statusColor = w.status === 'working' ? 'var(--green-light)' : w.status === 'idle' ? 'var(--amber)' : 'var(--blue)';
         const statusLabel = w.status === 'working' ? '⚙️ काम पर' : w.status === 'idle' ? '⏸️ रुके हुए' : '✅ उपलब्ध';
         return `
-      <div class="worker-card" onclick="openWorkerDetail(workers[${w.id - 1}])">
+      <div class="worker-card" onclick="openWorkerDetailById(${w.id})">
         <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
           <div class="worker-avatar" style="background:${avatarBg(w.name)};">
             ${w.name[0]}
             <div class="worker-avatar-status" style="background:${statusColor};"></div>
           </div>
           <div style="flex:1; min-width:0;">
-            <div class="worker-name">${w.name}</div>
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <div class="worker-name">${w.name}</div>
+              <button style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:12px; padding:0 4px; transition:color 0.2s;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--text-muted)'" onclick="event.stopPropagation(); deleteWorkerByAdmin(${w.id});" title="मज़दूर हटाएँ">🗑️</button>
+            </div>
             <div class="worker-meta">📍 ${w.village} · ${w.skill}</div>
             <div class="worker-meta" style="margin-top:3px;">${w.wage} · ${w.age} साल</div>
           </div>
@@ -3161,6 +4218,22 @@
       }).join('');
     }
 
+    function deleteWorkerByAdmin(id) {
+      if (!confirm('क्या आप सचमुच इस मज़दूर को हटाना चाहते हैं?')) return;
+      const index = workers.findIndex(w => w.id == id);
+      if (index !== -1) {
+        const name = workers[index].name;
+        workers.splice(index, 1);
+        saveWorkersToStorage();
+        renderWorkersGrid();
+        renderWorkerStatusList(getAdminWorkers());
+        renderAvailableWorkers();
+        populateAssignSelects();
+        animateCounters();
+        showToast('🗑️ मज़दूर हटाया गया: ' + name);
+      }
+    }
+
     // ============================================================
     // WORKER STATUS LIST (tracker page)
     // ============================================================
@@ -3170,7 +4243,7 @@
         const statusColor = w.status === 'working' ? 'var(--green-light)' : w.status === 'idle' ? 'var(--amber)' : 'var(--blue)';
         const statusLabel = w.status === 'working' ? '⚙️ काम पर' : w.status === 'idle' ? '⏸️ रुके' : '✅ उपलब्ध';
         return `
-      <div class="application-row" style="cursor:pointer;" onclick="openWorkerDetail(workers[${w.id - 1}])">
+      <div class="application-row" style="cursor:pointer;" onclick="openWorkerDetailById(${w.id})">
         <div class="worker-avatar" style="width:38px; height:38px; background:${avatarBg(w.name)}; font-size:15px;">
           ${w.name[0]}
           <div class="worker-avatar-status" style="background:${statusColor};"></div>
@@ -3191,7 +4264,7 @@
     }
 
     function filterWorkerList(q) {
-      const filtered = workers.filter(w =>
+      const filtered = getAdminWorkers().filter(w =>
         w.name.toLowerCase().includes(q.toLowerCase()) ||
         w.village.toLowerCase().includes(q.toLowerCase())
       );
@@ -3203,7 +4276,7 @@
     // ============================================================
     function renderAvailableWorkers() {
       const cont = document.getElementById('availableWorkerList');
-      const avail = workers.filter(w => w.status === 'available' || w.status === 'idle');
+      const avail = getAdminWorkers().filter(w => w.status === 'available' || w.status === 'idle');
       cont.innerHTML = avail.map(w => `
     <div style="display:flex; align-items:center; gap:10px; padding:10px; background:var(--bg-secondary); border-radius:10px; border:1px solid var(--border);">
       <div style="width:34px; height:34px; background:${avatarBg(w.name)}; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; color:#fff; flex-shrink:0;">${w.name[0]}</div>
@@ -3218,7 +4291,7 @@
 
     function renderVacantJobAssignList() {
       const cont = document.getElementById('vacantJobAssignList');
-      const vacant = jobs.filter(j => j.status === 'vacant' || (j.status === 'active' && j.filled < j.workers));
+      const vacant = getAdminJobs().filter(j => j.status === 'vacant' || (j.status === 'active' && j.filled < j.workers));
       cont.innerHTML = vacant.map(j => `
     <div style="display:flex; align-items:center; gap:10px; padding:10px; background:var(--bg-secondary); border-radius:10px; border:1px solid var(--border);">
       <div style="font-size:24px; flex-shrink:0;">${j.category.split(' ')[0]}</div>
@@ -3234,18 +4307,22 @@
     function populateAssignSelects() {
       const ws = document.getElementById('assignWorkerSelect');
       const js = document.getElementById('assignJobSelect');
-      workers.filter(w => w.status !== 'working').forEach(w => {
-        const opt = document.createElement('option');
-        opt.value = w.id;
-        opt.textContent = w.name + ' · ' + w.skill;
-        ws.appendChild(opt);
-      });
-      jobs.filter(j => j.status !== 'completed' && j.filled < j.workers).forEach(j => {
-        const opt = document.createElement('option');
-        opt.value = j.id;
-        opt.textContent = j.title + ' · ' + j.location;
-        js.appendChild(opt);
-      });
+      if (ws && js) {
+        ws.innerHTML = '<option value="">-- मज़दूर चुनें / Select Worker --</option>';
+        js.innerHTML = '<option value="">-- काम चुनें / Select Job --</option>';
+        getAdminWorkers().filter(w => w.status !== 'working').forEach(w => {
+          const opt = document.createElement('option');
+          opt.value = w.id;
+          opt.textContent = w.name + ' · ' + w.skill;
+          ws.appendChild(opt);
+        });
+        getAdminJobs().filter(j => j.status !== 'completed' && j.filled < j.workers).forEach(j => {
+          const opt = document.createElement('option');
+          opt.value = j.id;
+          opt.textContent = j.title + ' · ' + j.location;
+          js.appendChild(opt);
+        });
+      }
     }
 
     function quickAssign() {
@@ -3259,6 +4336,8 @@
         w.currentJob = j.title;
         j.filled = Math.min(j.filled + 1, j.workers);
         if (j.filled >= j.workers) j.status = 'completed';
+        saveWorkersToStorage();
+        saveJobsToStorage();
         showToast(`✅ ${w.name} को "${j.title}" assign किया! WhatsApp सूचना भेजी।`);
         renderWorkersGrid();
         renderWorkerStatusList(workers);
@@ -3278,7 +4357,8 @@
     // ============================================================
     function renderActivityFeed() {
       const cont = document.getElementById('activityFeed');
-      cont.innerHTML = activities.map(a => `
+      const filtered = getAdminActivities();
+      cont.innerHTML = filtered.map(a => `
     <div class="activity-item">
       <div class="activity-icon" style="background:${a.color};">${a.icon}</div>
       <div style="flex:1;">
@@ -3352,12 +4432,15 @@
       const workers_needed = parseInt(document.getElementById('newJobWorkers').value) || 1;
       const urgent = document.getElementById('newJobUrgent').value === '1';
       if (!title || !loc) { showToast('⚠️ नाम और स्थान ज़रूरी है'); return; }
-      const newJob = { id: jobs.length + 1, title, category: cat, wage: `₹${wage}/दिन`, location: loc, workers: workers_needed, filled: 0, status: 'vacant', urgent, desc: `${workers_needed} मज़दूर चाहिए` };
+      const newJob = { id: jobs.length + 1, title, category: cat, wage: `₹${wage}/दिन`, location: loc, district: currentAdminDistrict || 'Lucknow', workers: workers_needed, filled: 0, status: 'vacant', urgent, desc: `${workers_needed} मज़दूर चाहिए` };
       jobs.push(newJob);
+      saveJobsToStorage();
       closeModal('addJobModal');
       renderJobKanban();
       renderVacantJobs();
-      document.getElementById('s-vacant').textContent = jobs.filter(j => j.status === 'vacant').length;
+      renderVacantJobAssignList();
+      populateAssignSelects();
+      animateCounters();
       showToast('✅ नया काम जोड़ा गया: ' + title);
     }
 
@@ -3367,13 +4450,15 @@
       const village = document.getElementById('newWorkerVillage').value.trim();
       const skill = document.getElementById('newWorkerSkill').value;
       if (!name || !village) { showToast('⚠️ नाम और गाँव ज़रूरी है'); return; }
-      const newW = { id: workers.length + 1, name, village, skill, phone: phone || 'XXXXXXXXXX', jobsDone: 0, status: 'available', currentJob: null, wage: '₹400/दिन', gender: 'M', mapX: Math.random() * 80 + 10, mapY: Math.random() * 80 + 10, age: 30 };
+      const newW = { id: workers.length + 1, name, village, district: currentAdminDistrict || 'Lucknow', skill, phone: phone || 'XXXXXXXXXX', jobsDone: 0, status: 'available', currentJob: null, wage: '₹400/दिन', gender: 'M', mapX: Math.random() * 80 + 10, mapY: Math.random() * 80 + 10, age: 30 };
       workers.push(newW);
+      saveWorkersToStorage();
       closeModal('addWorkerModal');
       renderWorkersGrid();
-      renderWorkerStatusList(workers);
+      renderWorkerStatusList(getAdminWorkers());
       renderAvailableWorkers();
-      document.getElementById('s-workers').textContent = workers.length;
+      populateAssignSelects();
+      animateCounters();
       showToast('✅ नया मज़दूर जोड़ा गया: ' + name);
     }
 
@@ -3392,12 +4477,12 @@
     // ============================================================
     function exportData() {
       const csv = ['मज़दूर,काम,स्थान,किए काम,दिनांक,स्थिति'].concat(
-        applications.map(a => `${a.worker},${a.job},${a.village},${a.jobsDone},${a.date},${a.status}`)
+        getAdminApplications().map(a => `${a.worker},${a.job},${a.village},${a.jobsDone},${a.date},${a.status}`)
       ).join('\n');
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'kaamsetu_applications.csv';
+      a.download = `kaamsetu_${currentAdminDistrict || 'all'}_applications.csv`;
       a.click();
       showToast('📥 CSV Export हो रही है...');
     }
@@ -3407,19 +4492,27 @@
     // ============================================================
     function animateCounters() {
       const targets = [
-        { el: 's-applied', end: 142 },
-        { el: 's-working', end: 38 },
-        { el: 's-vacant', end: jobs.filter(j => j.status === 'vacant').length },
-        { el: 's-workers', end: workers.length },
+        { el: 's-applied', end: getAdminApplications().length },
+        { el: 's-working', end: getAdminWorkers().filter(w => w.status === 'working').length },
+        { el: 's-vacant', end: getAdminJobs().filter(j => j.status === 'vacant').length },
+        { el: 's-workers', end: getAdminWorkers().length },
       ];
       targets.forEach(({ el, end }) => {
         const elem = document.getElementById(el);
+        if (!elem) return;
+        if (end === 0) {
+          elem.textContent = 0;
+          return;
+        }
         let cur = 0;
         const step = end / 40;
         const iv = setInterval(() => {
           cur = Math.min(cur + step, end);
           elem.textContent = Math.round(cur);
-          if (cur >= end) clearInterval(iv);
+          if (cur >= end) {
+            elem.textContent = end;
+            clearInterval(iv);
+          }
         }, 30);
       });
     }
@@ -3438,6 +4531,52 @@
         rejected: '<span class="badge red">❌ Rejected</span>',
       };
       return map[s] || s;
+    }
+
+    // ============================================================
+    // INITIALIZE DISTRICTS FOR ADMIN LOGIN
+    // ============================================================
+    (function initAdminDistrictDropdown() {
+      const workerDist = document.getElementById('workerDistrict');
+      const loginDist = document.getElementById('loginDistrict');
+      if (workerDist && loginDist) {
+        loginDist.innerHTML = workerDist.innerHTML;
+        // Set custom placeholder for admin panel
+        if (loginDist.options[0]) {
+          loginDist.options[0].textContent = '-- जिला चुनें / Select District --';
+        }
+      }
+    })();
+
+    // ============================================================
+    // AUTO-RESTORE SESSION ON PAGE LOAD
+    // ============================================================
+    (function checkSavedWorkerSession() {
+      const session = getSavedWorkerSession();
+      if (session && session.name && session.phone && session.village) {
+        // Show quick-login banner on worker tab
+        const banner = document.getElementById('savedSessionBanner');
+        if (banner) {
+          banner.style.display = 'flex';
+          document.getElementById('savedAvatar').textContent = session.name[0].toUpperCase();
+          document.getElementById('savedName').textContent = session.name;
+          document.getElementById('savedMeta').textContent = `${session.skill || ''} · ${session.village}, ${session.district || ''}`;
+        }
+        // Auto-switch to worker tab and show banner
+        switchLoginRole('worker');
+      }
+    })();
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+          .then(registration => {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+          }, err => {
+            console.log('ServiceWorker registration failed: ', err);
+          });
+      });
     }
   </script>
 </body>

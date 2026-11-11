@@ -1,4 +1,20 @@
-<style>
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>KaamSetu - Worker Portal</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#3b82f6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="KaamSetu Worker Portal - Find local jobs and connect with contractors easily.">
+  <meta property="og:title" content="KaamSetu Worker Portal">
+  <meta property="og:description" content="Find local jobs and connect with contractors easily.">
+  <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/3658/3658392.png">
+  <meta property="og:url" content="https://kaamsetu.in/jobs.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>
   * {
     box-sizing: border-box;
     margin: 0;
@@ -35,6 +51,34 @@
     --color-border-secondary: #3a4d36;
     --color-border-tertiary: #2f3f2c;
   }
+
+  [data-theme="light"] body,
+  [data-theme="light"].app {
+    --bg-card: #1E293B;
+  }
+
+  /* Global Loader */
+  #globalLoader {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(11, 18, 22, 0.85);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+  .spinner {
+    width: 50px; height: 50px;
+    border: 5px solid rgba(255,255,255,0.2);
+    border-top-color: var(--green-light);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+  }
+  @keyframes spin { 100% { transform: rotate(360deg); } }
 
   [data-theme="light"] body,
   [data-theme="light"].app {
@@ -1205,6 +1249,14 @@
     font-weight: 500;
   }
 </style>
+</head>
+<body>
+
+<!-- Global Loader -->
+<div id="globalLoader">
+  <div class="spinner"></div>
+  <div id="loaderText" style="font-family: sans-serif; font-weight: 500;">Loading data...</div>
+</div>
 
 <div class="app" id="app">
   <div class="toast" id="toast" style="opacity:0;top:50px;"></div>
@@ -1943,6 +1995,21 @@
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
 <script>
+  // ==========================================
+  // GLOBAL LOADER CONTROLS
+  // ==========================================
+  function showLoader(text = 'Loading data...') {
+    const loader = document.getElementById('globalLoader');
+    if(loader) {
+      document.getElementById('loaderText').textContent = text;
+      loader.style.display = 'flex';
+    }
+  }
+  function hideLoader() {
+    const loader = document.getElementById('globalLoader');
+    if(loader) loader.style.display = 'none';
+  }
+
   const WA_CHANNEL = "https://whatsapp.com/channel/0029Vb7C3iR6LwHehS9hhY3g";
   const APPLY_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc2cQRLFijJOV1qsO95LXgeS4tBb2cmwncXNKsXHm6G-zOGjg/viewform?usp=header";
   const AI_CHATBOT_URL = "/api/chat";
@@ -3094,7 +3161,13 @@
 
   function attachJobListeners() {
     if (!db) {
-      allJobsCache = [...DEMO_JOBS];
+      const storedJobs = localStorage.getItem('ks_jobs_db');
+      if (storedJobs) {
+        allJobsCache = JSON.parse(storedJobs);
+      } else {
+        allJobsCache = [...DEMO_JOBS];
+        try { localStorage.setItem('ks_jobs_db', JSON.stringify(allJobsCache)); } catch(e) {}
+      }
       syncJobViews();
       return;
     }
@@ -3712,3 +3785,17 @@
   setInterval(updateStats, 3000);
 
 </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+          .then(registration => {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+          }, err => {
+            console.log('ServiceWorker registration failed: ', err);
+          });
+      });
+    }
+  </script>
+</body>
+</html>

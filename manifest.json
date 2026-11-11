@@ -1,0 +1,21 @@
+{
+  "name": "KaamSetu Portal",
+  "short_name": "KaamSetu",
+  "description": "Empowering Rural Workers and Contractors",
+  "start_url": "./jobs.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3658/3658392.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3658/3658392.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
